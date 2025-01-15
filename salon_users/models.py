@@ -24,11 +24,23 @@ class TimestampedModel(models.Model):
         abstract = True
 
 
+class ServiceCategory(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)  
+    is_active = models.BooleanField(default=True)
+    add_to_home = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+
 class Services(TimestampedModel):
     name = models.CharField(max_length=255)
     description = models.TextField()
+    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name="services", null=True, blank=True)
     image = models.ImageField(upload_to='services/')
     is_active = models.BooleanField(default=True)
+    add_to_home = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
