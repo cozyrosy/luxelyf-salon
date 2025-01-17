@@ -96,51 +96,21 @@
             </div>
             <!-- Section caption -->
             <div class="row">
+                {% for service in services %}
                 <div class="col-xl-4 col-lg-4 col-md-6">
                     <div class="services-caption text-center mb-30">
                         <div class="service-icon">
                             <!-- <i class="flaticon-healthcare-and-medical"></i> -->
-                            <img src="{% static 'assets/img/gallery/man.png' %}" alt="" style="max-width: 50%; max-height: 300px;">
+                            <img src="{{ service.image.url }}" alt="" style="max-width: 50%; max-height: 300px;">
 
                         </div> 
                         <div class="service-cap">
-                            <h4><a href="#">Hair Services</a></h4>
-                            <p>Haircuts (Men, Women, and Children),
-                                Hair Wash and Blow-dry,
-                                Hair Styling (Straightening, Curling, etc.),
-                                Hair Coloring (Highlights, Root Touch-ups),
-                                Hair Treatments (Hair Spa, Keratin Treatment, Anti-dandruff).</p>
+                            <h4><a href="#">{{ service.name }}</a></h4>
+                            <p>{{ service.description }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="services-caption active text-center mb-30">
-                        <div class="service-icon">
-                            <img src="{% static 'assets/img/gallery/makeup.png' %}" alt="" style="max-width: 50%; max-height: 300px;">
-                        </div> 
-                        <div class="service-cap">
-                            <h4><a href="#">Skin and Facial Services</a></h4>
-                            <p>
-                                Facials (Basic clean-up, Anti-aging, Brightening, Acne care),
-                                 Face Bleaching, Threading Skin Polishing and Exfoliation Treatments.</p>
-                        </div>
-                    </div>
-                </div> 
-                <div class="col-xl-4 col-lg-4 col-md-6"> 
-                    <div class="services-caption text-center mb-30">
-                        <div class="service-icon">
-                            <img src="{% static 'assets/img/gallery/face-mask.png' %}" alt="" style="max-width: 50%; max-height: 300px;">
-
-                        </div> 
-                        <div class="service-cap">
-                            <h4><a href="#">Makeup Services</a></h4>
-                            <p> Makeup Services (Basic Makeup, Day Look, Bridal Makeup,
-                                 Party Makeup), Eye Makeup, Contouring,
-                                  High-definition Makeup,
-                                 and Full-face Application for Special Occasions.</p>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -262,32 +232,32 @@
                 <div class="col-xl-6 col-lg-7 col-md-9 col-sm-10">
                     <div class="section-tittle text-center mb-100">
                         <span>our image gallery</span>
-                        <h2>some images from our barber shop</h2>
+                        <h2>some images from our salon</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="box snake mb-30">
-                        <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery1.png);"></div>
+                        <div class="gallery-img " style="background-image: url({% static 'assets/img/gallery/gallery1.png' %});"></div>
                         <div class="overlay"></div>
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-6 col-sm-6">
                     <div class="box snake mb-30">
-                        <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery2.png);"></div>
+                        <div class="gallery-img " style="background-image: url({% static 'assets/img/gallery/gallery2.png' %});"></div>
                         <div class="overlay"></div>
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-6 col-sm-6">
                     <div class="box snake mb-30">
-                        <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery3.png);"></div>
+                        <div class="gallery-img " style="background-image: url({% static 'assets/img/gallery/gallery3.png' %});"></div>
                         <div class="overlay"></div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="box snake mb-30">
-                        <div class="gallery-img " style="background-image: url(assets/img/gallery/gallery4.png);"></div>
+                        <div class="gallery-img " style="background-image: url({% static 'assets/img/gallery/gallery4.png' %});"></div>
                         <div class="overlay"></div>
                     </div>
                 </div>
@@ -362,42 +332,25 @@
             </div>
             <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-6">
+                    {% for blog in blogs %}
                     <div class="home-blog-single mb-30">
                         <div class="blog-img-cap">
                             <div class="blog-img">
                                 <img src="{% static 'assets/img/gallery/home-blog1.png' %}" alt="">
                                 <!-- Blog date -->
                                 <div class="blog-date text-center">
-                                    <span>31</span>
-                                    <p>DEC</p>
+                                    <span>{{ blog.date.day }}</span>
+                                    <p>{{ blog.date|date:"F" }}</p>
                                 </div>
                             </div>
                             <div class="blog-cap">
-                                <p>|shine</p>
-                                <h3><a href="blog.html">Revitalize Your Hair with Our Expert Women's Hair Treatments</a></h3>
+                                <p>|{{ blog.author }}</p>
+                                <h3><a href="blog.html">{{ blog.title }}</a></h3>
                                 <a href="blog.html" class="more-btn">Read »</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xl-6 col-lg-6 col-md-6">
-                    <div class="home-blog-single mb-30">
-                        <div class="blog-img-cap">
-                            <div class="blog-img">
-                                <img src="{% static 'assets/img/gallery/home-blog2.png' %}" alt="">
-                                <!-- Blog date -->
-                                <div class="blog-date text-center">
-                                    <span>01 </span>
-                                    <p>Jan</p>
-                                </div>
-                            </div>
-                            <div class="blog-cap">
-                                <p>|shien</p>
-                                <h3><a href="blog_details.html">Flawless Makeup Services for Every Occasion</a></h3>
-                                <a href="blog_details.html" class="more-btn">read »</a>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
