@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Blog, CustomerInquiry, Portfolio, Services, ServiceCategory, UserProfile
+from .models import Blog, CustomerInquiry, Portfolio, Service, ServiceCategory, UserProfile
 
 # Register your models here.
 admin.site.register(UserProfile)
-admin.site.register(Services)
+admin.site.register(Service)
 admin.site.register(Portfolio)
 admin.site.register(Blog)
 admin.site.register(CustomerInquiry)
