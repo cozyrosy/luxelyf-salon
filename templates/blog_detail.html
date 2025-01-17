@@ -26,61 +26,25 @@
              <div class="col-lg-8 posts-list">
                 <div class="single-post">
                    <div class="feature-img">
-                      <img class="img-fluid" src="{% static 'assets/img/blog/home-blog2.png' %}" alt="">
+                      <img class="img-fluid" src="{{ blog.image.url }}" alt="">
                    </div>
                    <div class="blog_details">
-                      <h2 style="color: #2d2d2d;">Experience the Best Haircuts and Makeup Services at Our Muvattupuzha Salon</h2>
+                      <h2 style="color: #2d2d2d;">{{ blog.title }}</h2>
                       <ul class="blog-info-link mt-3 mb-4">
-                          <li><a href="#"><i class="fa fa-user"></i> Beauty, Lifestyle</a></li>
-                          <li><a href="#"><i class="fa fa-comments"></i> 05 Comments</a></li>
+                          <li><a href="#"><i class="fa-regular fa-calendar-days"></i> {{ blog.date }}</a></li>
+                          <li><a href="#"><i class="fa fa-user"></i> {{ blog.author }}</a></li>
                       </ul>
                       <p class="excert">
-                          Welcome to **Luxe-Lyf Unisex Salon**, the top-rated beauty destination in **Muvattupuzha**. Whether you’re looking for the latest haircut trends, professional makeup services, or expert grooming, we provide an unmatched experience designed to make you feel your best. Luxe-Lyf combines style, precision, and a warm, friendly atmosphere to ensure every visit is memorable.
+                        {{ blog.description }}
                       </p>
-                      <p>
-                          Our salon is not just a place for hair and makeup services; it’s a haven where style meets relaxation. We specialize in creating unique looks that reflect your personality while keeping you on-trend. Our team of skilled professionals works with precision and creativity to offer the best haircuts, vibrant hair coloring, and flawless makeup application tailored to your needs.
-                      </p>
-                      <div class="quote-wrapper">
-                          <div class="quotes">
-                              "At Luxe-Lyf, we don’t just style your hair or apply makeup – we craft confidence, elegance, and beauty, making us the ultimate salon experience in Muvattupuzha."
-                          </div>
+                    </div>
+                    <div class="blog_details">
+                        <h2 style="color: #2d2d2d;">{{ blog.title }}</h2>
+                        <ul class="blog-info-link mt-3 mb-4">
+                            <li><a href="#"><i class="fa-regular fa-calendar-days"></i> {{ blog.date }}</a></li>
+                            <li><a href="#"><i class="fa fa-user"></i> {{ blog.author }}</a></li>
+                        </ul>
                       </div>
-                      <h3>Why Choose Luxe-Lyf in Muvattupuzha?</h3>
-                      <p>
-                          Located in the heart of **Muvattupuzha**, Luxe-Lyf Unisex Salon is known for its modern facilities, professional team, and exceptional services. Whether you’re visiting for a quick trim or a complete makeover, we ensure you leave feeling rejuvenated and confident.
-                      </p>
-                      <ul>
-                          <li>**Expert Stylists**: Our professionals stay updated with the latest trends and techniques to deliver the best results.</li>
-                          <li>**Unisex Services**: Catering to both men and women, we offer a wide range of services, including precision haircuts, beard grooming, and bridal makeup.</li>
-                          <li>**Relaxing Atmosphere**: Our salon is designed to provide a serene environment where you can unwind while we take care of your beauty needs.</li>
-                      </ul>
-                      <h3>Our Signature Services</h3>
-                      <p>
-                          At Luxe-Lyf, we offer a comprehensive range of services to meet all your beauty requirements:
-                      </p>
-                      <ul>
-                          <li>**Haircuts and Styling**: Trendy, classic, and creative haircuts for men, women, and children.</li>
-                          <li>**Hair Treatments**: From keratin smoothing to hair spas, we provide treatments to revitalize and strengthen your hair.</li>
-                          <li>**Makeup Services**: Flawless bridal and party makeup, tailored to enhance your natural beauty.</li>
-                          <li>**Beard Grooming**: Expert trimming and styling to complement your facial features.</li>
-                      </ul>
-                      <h3>Bridal and Groom Packages</h3>
-                      <p>
-                          Your wedding day deserves nothing but perfection, and Luxe-Lyf is here to make it happen. Our **bridal and groom packages** include personalized hair and makeup services to ensure you look radiant and confident on your special day. From elegant hairstyles to high-definition makeup, we bring your dream look to life.
-                      </p>
-                      <h3>Customer-Centric Approach</h3>
-                      <p>
-                          What sets Luxe-Lyf apart is our commitment to customer satisfaction. We believe every individual is unique, and our goal is to provide services tailored to your specific preferences. Our friendly and professional team listens to your needs, offering expert advice to help you achieve your desired look.
-                      </p>
-                      <p>
-                          Whether you’re visiting for a routine haircut, a special occasion makeover, or just a day of self-care, Luxe-Lyf ensures a premium experience with exceptional results. Our salon is your one-stop destination for beauty and grooming in **Muvattupuzha**.
-                      </p>
-                      <h3>Book Your Appointment Today!</h3>
-                      <p>
-                          Don’t wait to experience the best salon services in **Muvattupuzha**. Visit Luxe-Lyf Unisex Salon and let us transform your look with style and care. Call us today or book online to reserve your spot at Muvattupuzha’s most trusted salon.
-                      </p>
-                  </div>
-                  
               
              
           </div>

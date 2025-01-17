@@ -25,105 +25,26 @@
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
+                        {% for blog in blogs %}
                         <article class="blog_item">
-                            <div class="blog_item_img" href="{% url 'blog_detail' %}">
-                                <img class="card-img rounded-0" src="{% static 'assets/img/gallery/home-blog1.png' %}" alt="">
+                            <div class="blog_item_img" href="{% url 'blog_detail' blog.id %}">
+                                <img class="card-img rounded-0" src="{{ blog.image.url }}" alt="">
                                 <a href="#" class="blog_item_date">
-                                    <h3>01</h3>
-                                    <p>Jan</p>
+                                    <h3>{{ blog.date.day }}</h3>
+                                    <p>{{ blog.date|date:"F" }}</p>
                                 </a>
                             </div>
                             <div class="blog_details" >
-                                <a class="d-inline-block" href="{% url 'blog_detail' %}">
-                                    <h2 class="blog-head" style="color: #2d2d2d;">Revitalize Your Hair with Our Expert Women's Hair Treatments</h2>
+                                <a class="d-inline-block" href="{% url 'blog_detail' blog.id %}">
+                                    <h2 class="blog-head" style="color: #2d2d2d;">{{ blog.title }}</h2>
                                 </a>
-                                <p>Discover the ultimate destination for luxurious hair care and styling at Luxe-Lyf Unisex Salon in Muvattupuzha. We specialize in advanced women's hair treatments designed to nourish, repair, and transform your hair. From revitalizing hair spas
-                                     and keratin therapies to precision haircuts and coloring, our experts ensure your hair always looks its best .........</p>
+                                <p>{{ blog.description|truncatechars:250 }}</p>
                                 <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Lifestyle</a></li>
+                                    <li><a href="#"><i class="fa fa-user"></i> {{ blog.author }}</a></li>
                                 </ul>
                             </div>
                         </article>
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="{% static 'assets/img/gallery/home-blog2.png' %}" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>01</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-                            <div class="blog_details" href="{% url 'blog_detail' %}">
-                                <a class="d-inline-block" href="{% url 'blog_detail' %}">
-                                    <h2 class="blog-head" style="color: #2d2d2d;">
-                                        Flawless Makeup Services for Every Occasion</h2>
-                                </a>
-                                <p>At Luxe-Lyf Unisex Salon in Muvattupuzha, we specialize in creating stunning makeup looks for every event. Whether it’s a wedding, party, or special occasion, our expert makeup artists craft personalized styles to enhance your natural beauty. From elegant bridal 
-                                    makeup to sophisticated groom styling and party-ready makeovers, we ensure a flawless finish every time</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i>  Lifestyle</a></li>
-                                </ul>
-                            </div>
-                        </article>
-                        <!-- <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="assets/img/blog/single_blog_3.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="blog_details.html">
-                                    <h2 class="blog-head" style="color: #2d2d2d;">Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="assets/img/blog/single_blog_4.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="blog_details.html">
-                                    <h2 class="blog-head" style="color: #2d2d2d;">Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article>
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img class="card-img rounded-0" src="assets/img/blog/single_blog_5.png" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>15</h3>
-                                    <p>Jan</p>
-                                </a>
-                            </div>
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="blog_details.html">
-                                    <h2 class="blog-head" style="color: #2d2d2d;">Google inks pact for new 35-storey office</h2>
-                                </a>
-                                <p>That dominion stars lights dominion divide years for fourth have don't stars is that
-                                    he earth it first without heaven in place seed it second morning saying.</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                    <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                </ul>
-                            </div>
-                        </article> -->
+                        {% endfor %}
                         <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
                                 <li class="page-item">

@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from . import views
 
@@ -9,4 +11,4 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('blogs/', views.blogs, name='blogs'),
     path('blog_detail/<int:id>/', views.blog_detail, name='blog_detail'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
