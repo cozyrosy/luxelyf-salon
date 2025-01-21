@@ -44,7 +44,7 @@ def login_view(request):
             return redirect('/') 
         else:
             return render(request, 'login.html', {'error': 'Invalid credentials'})
-    return render(request, 'login.html')
+    return render(request, 'user_templates/login.html')
 
 def logout_view(request):
     logout(request)
@@ -92,4 +92,7 @@ def register(request):
         messages.success(request, "Account created successfully! Please log in.")
         return redirect('login')
 
-    return render(request, 'register.html')
+    return render(request, 'user_templates/register.html')
+
+def book_service(request):
+    return render(request, 'user_templates/book_service.html')
