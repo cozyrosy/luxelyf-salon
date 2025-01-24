@@ -96,3 +96,10 @@ def register(request):
 
 def book_service(request):
     return render(request, 'user_templates/book_service.html')
+
+def booking_history(request):
+    return render(request, 'user_templates/booking_history.html')
+
+def my_profile(request):    
+    return render(request, 'user_templates/my_profile.html')
+    
