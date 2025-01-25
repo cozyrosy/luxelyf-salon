@@ -30,7 +30,7 @@ class TimestampedModel(models.Model):
 class ServiceCategory(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='service_categories/', null=True, blank=True)
+    image = models.ImageField(upload_to='static/service_categories/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     add_to_home = models.BooleanField(default=False)
 

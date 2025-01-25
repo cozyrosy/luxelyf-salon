@@ -1,9 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Blog, ServiceCategory, UserProfile
+from .models import Blog, Service, ServiceCategory, UserProfile
+from salon_staff.models import Booking, Staff
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
+from datetime import datetime, timedelta
+from django.core.paginator import Paginator
 # Create your views here.
 
 def index(request):
@@ -94,11 +97,80 @@ def register(request):
 
     return render(request, 'user_templates/register.html')
 
+
+
 def book_service(request):
-    return render(request, 'user_templates/book_service.html')
+    categories = ServiceCategory.objects.filter(is_active=True)
+    services = Service.objects.filter(is_active=True)
+    staffs = Staff.objects.filter(is_active=True)   
+
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        service_id = request.POST.get('service')
+        staff_id = request.POST.get('staff', None)
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+
+        # Validate inputs
+        if not service_id or not category_id or not date or not time:
+            messages.error(request, 'Please fill all the required fields.')
+            return redirect('book_service')
+
+        service = get_object_or_404(Service, id=service_id)
+        if not service:
+            messages.error(request, 'Invalid service selected.')
+
+        if staff_id:
+            staff = Staff.objects.filter(id=staff_id).first()
+            if not staff:
+                messages.error(request, 'Invalid staff selected.')
+
+        # Convert date and time to datetime objects
+        start_time = datetime.strptime(f"{date} {time}", '%Y-%m-%d %H:%M')
+        end_time = start_time + timedelta(hours=1)
+
+        # Check if the staff is available during the selected time
+        conflicting_bookings = Booking.objects.filter(
+            staff_id=staff_id,
+            date=date,
+            status='Confirmed'
+        ).filter(
+            # Check if the new booking overlaps with existing bookings
+            time__range=(time, (end_time - timedelta(minutes=1)).time())
+        )
+
+        if conflicting_bookings.exists():
+            messages.error(request, 'The selected staff is not available at the chosen time.')
+            return redirect('book_service')
+
+        # Save the booking
+        service = get_object_or_404(Service, id=service_id)
+        user = get_object_or_404(User, id=request.user.id)
+        customer = UserProfile.objects.filter(user=user).first()
+
+        # Save the booking
+        booking = Booking.objects.create(
+            customer=customer,
+            staff=staff if staff_id else None,
+            service=service,
+            date=date,
+            time=time,
+            status='Pending'
+        )
+
+        messages.success(request, 'Booking created successfully! Please wait for confirmation.')
+        return redirect('booking_history')
+
+    return render(request,   'user_templates/book_service.html', {'categories': categories, 'services': services, 'staffs': staffs})
 
 def booking_history(request):
-    return render(request, 'user_templates/booking_history.html')
+    bookings = Booking.objects.filter(customer__user=request.user)
+    paginator = Paginator(bookings, 5)  # Show 10 bookings per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'user_templates/booking_history.html', {'page_obj': page_obj, 'bookings': bookings})
 
 def my_profile(request):    
     return render(request, 'user_templates/my_profile.html')
