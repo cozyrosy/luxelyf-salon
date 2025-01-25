@@ -1,0 +1,189 @@
+{% extends 'admin_templates/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+	<div class="pcoded-content">
+        <div class="row">
+            <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active text-uppercase" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" id="confirmed-tab" data-toggle="tab" href="#confirmed" role="tab" aria-controls="confirmed" aria-selected="true">Confirmed</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" id="completed-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="completed" aria-selected="false">Completed</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-uppercase" id="cancelled-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Cancelled</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                            <p class="mb-0">
+                                <!-- [ Hover-table ] start -->
+                                    <div class="d-flex">
+                                        <div class="card-header">
+                                            <h5>View all the bookings here.</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <button type="button" class="btn btn-primary">New Booking</button>
+                                        </div>
+                                    </div>
+                                    <!-- [ default-button ] end -->
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Service</th>
+                                                        <th>Customer</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Staff</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for booking in all_bookings %}
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>{{ booking.service.name }}</td>
+                                                        <td>{{ booking.customer.user.username }}</td>
+                                                        <td>{{ booking.date }}</td>
+                                                        <td>{{ booking.time }}</td>
+                                                        <td>{{ booking.staff.username }}</td>
+                                                        <td>{{ booking.status }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <!-- [ Hover-table ] end -->
+                            </p>
+                        </div>
+                        <div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                            <p class="mb-0">
+                                <!-- [ Hover-table ] start -->
+                                    <div class="d-flex">
+                                        <div class="card-header">
+                                            <h5>View the pending bookings here.</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Service</th>
+                                                        <th>Customer</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Staff</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for pending in pendings %}
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>{{ pending.service.name }}</td>
+                                                        <td>{{ pending.customer.user.username }}</td>
+                                                        <td>{{ pending.date }}</td>
+                                                        <td>{{ pending.time }}</td>
+                                                        <td>{{ pending.staff.username }}</td>
+                                                        <td>{{ pending.status }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <!-- [ Hover-table ] end -->
+                            </p>
+                        </div>
+                        <div class="tab-pane fade" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab">
+                            <p class="mb-0">
+                                <!-- [ Hover-table ] start -->
+                                    <div class="d-flex">
+                                        <div class="card-header">
+                                            <h5>View the pending bookings here.</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Service</th>
+                                                        <th>Customer</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Staff</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if confirmed %}
+                                                    {% for confirm in confirmed %}
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>{{ confirm.service.name }}</td>
+                                                        <td>{{ confirm.customer.user.username }}</td>
+                                                        <td>{{ confirm.date }}</td>
+                                                        <td>{{ confirm.time }}</td>
+                                                        <td>{{ confirm.staff.username }}</td>
+                                                        <td>{{ confirm.status }}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    {% endfor %}
+
+                                                    {% else %}
+                                                        <p class="text-center" colspan="8">No confirmed bookings</p>
+                                                    {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <!-- [ Hover-table ] end -->
+                            </p>
+                        </div>
+                        <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                            <p class="mb-0">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed
+                                craft beer,
+                                iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Lnyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+                        </div>
+                        <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+                            <p class="mb-0">Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed
+                                craft beer,
+                                iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Lnyl craft beer blog stumptown. Pitchfork sustainable tofu synth chambray yr.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
