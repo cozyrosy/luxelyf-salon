@@ -5,8 +5,7 @@ from salon_users.models import TimestampedModel, Service, UserProfile
 
 # Create your models here.
 
-class Staff(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Staff(UserProfile):
     role = models.CharField(max_length=255)
 
     def __str__(self):
@@ -36,7 +35,7 @@ class Booking(TimestampedModel):
     ]
     customer = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='bookings')
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, related_name='bookings')
+    staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True, related_name='staff')
     date = models.DateField()
     time = models.TimeField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')

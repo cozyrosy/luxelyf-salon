@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'salon_users',
+    'salon_staff',
 ]
 
 MIDDLEWARE = [
