@@ -1,0 +1,71 @@
+{% extends 'admin_staff_templates/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+	<div class="pcoded-content">
+        <div class="row">
+            <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Sevice Categories</h5>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary">Add new</button>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                            <p class="mb-0">
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                        <th>Phone</th>
+                                                        <th>Image</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for staff in staffs %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ staff.user.get_full_name }}</td>
+                                                        <td>{{ staff.user.username }}</td>
+                                                        <td>+ {{staff.country_code}} {{ staff.phone }}</td>
+                                                        <td><img src="{{ staff.image.url }}" alt="Staff Image" style="width: 50px; height: 50px;"></td>
+                                                        <td>
+                                                            {% if staff.is_active %}
+                                                                <button type="button" class="btn btn-success" style="background-color: #598a50;">Active</button>
+                                                            {% else %}
+                                                                <button type="button" class="btn btn-danger" style="background-color: #c24242;">Inactive</button>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary" style="background-color: #3899d1;"><i class="fa-regular fa-eye"></i>&nbsp;&nbsp;View</button>
+                                                            <button type="button" class="btn btn-primary"><i class="fa regular fa-pen-to-square"></i>&nbsp;&nbsp;Edit</button>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <!-- [ Hover-table ] end -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
