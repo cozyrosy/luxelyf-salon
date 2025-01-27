@@ -69,7 +69,7 @@ class Blog(TimestampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     author = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='blogs/')
+    image = models.ImageField(upload_to='static/blogs/')
     date = models.DateField()
 
     def __str__(self):
@@ -91,7 +91,7 @@ class CustomerInquiry(TimestampedModel):
 class Reviews(TimestampedModel):
     review = models.TextField()
     author = models.CharField(max_length=255)
-    rating = models.IntegerField()
+    rating = models.IntegerField(null=True, blank=True)
     add_to_home = models.BooleanField(default=False)
 
     def __str__(self):
