@@ -17,8 +17,7 @@ from django.contrib.sessions.backends.db import SessionStore as session
 def admin_index(request):
     if request.user.is_authenticated:
         return render(request, 'admin_staff_templates/admin_index.html')
-    else:
-        return redirect('admin_login')
+    
 
 
 # Admin authentication
