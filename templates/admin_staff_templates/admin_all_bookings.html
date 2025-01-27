@@ -11,6 +11,16 @@
                 <div class="card-header">
                     <h5>Bookings</h5>
                 </div>
+                {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show m-2" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 <div class="card-body">
                     <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
                         <li class="nav-item">
@@ -32,16 +42,93 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                             <p class="mb-0">
+
+
                                 <!-- [ Hover-table ] start -->
                                     <div class="d-flex">
-                                        <div class="card-header">
-                                            <h5>View all the bookings here.</h5>
-                                        </div>
                                         <div class="card-body">
-                                            <button type="button" class="btn btn-primary">New Booking</button>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter">Add new</button>
                                         </div>
+                                        <!-- [ vertically-add-modal ] start -->
+                                        <div id="addModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <form class="needs-validation" novalidate method="post" action="{% url 'admin_add_booking' %}" enctype="multipart/form-data">
+                                                        {% csrf_token %}
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Add Booking</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label for="validationCustom01">Customer <span class="text-danger">*</span></label>
+                                                                    <select class="form-control" id="validationCustom01" name="customer" required>
+                                                                        <option value="" disabled selected>Select a customer</option>
+                                                                        {% for customer in customers %}
+                                                                            <option value="{{ customer.id }}">{{ customer.user.get_full_name }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label for="validationCustom02">Service <span class="text-danger">*</span></label>
+                                                                    <select class="form-control" id="validationCustom02" name="service" required>
+                                                                        <option value="" disabled selected>Select a service</option>
+                                                                        {% for service in services %}
+                                                                            <option value="{{ service.id }}">{{ service.name }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label for="validationCustom03">Staff <span class="text-danger">*</span></label>
+                                                                    <select class="form-control" id="validationCustom03" name="staff" required>
+                                                                        <option value="" disabled selected>Select a preferred staff</option>
+                                                                        {% for staff in staffs %}
+                                                                            <option value="{{ staff.id }}">{{ staff.user.get_full_name }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label for="validationCustom04">Date <span class="text-danger">*</span></label>
+                                                                    <input type="date" class="form-control" id="validationCustom04" name="date" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label for="validationCustom05" >Time <span class="text-danger">*</span></label>
+                                                                    <input type="time" class="form-control" id="validationCustom05" name="time" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-12">
+                                                                    <label for="validationCustom06">Status <span class="text-danger">*</span></label>
+                                                                    <select class="form-control" id="validationCustom06" name="status" required>
+                                                                        <option value="" disabled selected>Select a status</option>
+                                                                        {% for status in booking_status_choices %}
+                                                                            <option value="{{ status.0 }}">{{ status.1 }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- [ vertically-add-modal ] end -->
                                     </div>
-                                    <!-- [ default-button ] end -->
+                                    
+
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
@@ -67,7 +154,164 @@
                                                         <td>{{ booking.time }}</td>
                                                         <td>{{ booking.staff.username }}</td>
                                                         <td>{{ booking.status }}</td>
-                                                        <td></td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{booking.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{booking.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{booking.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
+
+                                                        <!-- [ vertically-view-modal ] start -->
+                                                        <div id="viewModalCenter{{booking.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">View Booking</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form method="get">
+                                                                            <div class="form-group row">
+                                                                                <label for="customer" class="col-sm-3 col-form-label">Customer</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="customer" value="{{ booking.customer.user.get_full_name }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="service" class="col-sm-3 col-form-label">Service</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="service" value="{{ booking.service.name }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="staff" class="col-sm-3 col-form-label">Staff</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="staff" value="{{ booking.staff.user.get_full_name }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="date" class="col-sm-3 col-form-label">Date</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="date" value="{{ booking.date }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="time" class="col-sm-3 col-form-label">Time</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="time" value="{{ booking.time }}">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="status" class="col-sm-3 col-form-label">Status</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="status" value="{{ booking.status }}">
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                        <!-- [ vertically-view-modal ] end -->
+
+
+                                                <!-- [ vertically-edit-modal ] start -->
+                                                        <div id="editModalCenter{{booking.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <form class="needs-validation" novalidate method="post" action="{% url 'admin_edit_booking' booking.id %}" enctype="multipart/form-data">
+                                                                        {% csrf_token %}
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Booking</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="form-group row">
+                                                                                <label for="customer" class="col-sm-3 col-form-label">Customer</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <select class="form-control" id="customer" name="customer" required>
+                                                                                        {% for customer in customers %}
+                                                                                            <option value="{{ customer.id }}" {% if customer.id == booking.customer.id %}selected{% endif %}>{{ customer.user.get_full_name }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="service" class="col-sm-3 col-form-label">Service</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <select class="form-control" id="service" name="service" required>
+                                                                                        {% for service in services %}
+                                                                                            <option value="{{ service.id }}" {% if service.id == booking.service.id %}selected{% endif %}>{{ service.name }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="staff" class="col-sm-3 col-form-label">Staff</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <select class="form-control" id="staff" name="staff" required>
+                                                                                        {% for staff in staffs %}
+                                                                                            <option value="{{ staff.id }}" {% if staff.id == booking.staff.id %}selected{% endif %}>{{ staff.user.get_full_name }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="date" class="col-sm-3 col-form-label">Date</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="date" class="form-control" id="date" name="date" value="{{ booking.date }}" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="time" class="col-sm-3 col-form-label">Time</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="time" class="form-control" id="time" name="time" value="{{ booking.time }}" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="status" class="col-sm-3 col-form-label">Status</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" class="form-control" id="status" name="status" value="{{ booking.status }}" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                <!-- [ vertically-edit-modal ] end -->
+
+
+                                                    <!-- [ vertically-delete-modal ] start -->
+                                                                <div id="deleteModalCenter{{booking.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <form method="post" action="{% url 'admin_del_booking' booking.id %}">
+                                                                                {% csrf_token %}
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Booking</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p class="mb-0">Are you sure to delete the <b>{{ booking.service.name }}</b> service by - <span class="h5 text-danger">{{ booking.customer.user.get_full_name }}</span>?</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn  btn-danger">Delete</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    <!-- [ vertically-delete-modal ] end -->
+
+
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
@@ -80,11 +324,7 @@
                         <div class="tab-pane fade" id="pending" role="tabpanel" aria-labelledby="pending-tab">
                             <p class="mb-0">
                                 <!-- [ Hover-table ] start -->
-                                    <div class="d-flex">
-                                        <div class="card-header">
-                                            <h5>View the pending bookings here.</h5>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
@@ -110,7 +350,11 @@
                                                         <td>{{ pending.time }}</td>
                                                         <td>{{ pending.staff.username }}</td>
                                                         <td>{{ pending.status }}</td>
-                                                        <td></td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{category.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{category.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{category.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
@@ -123,11 +367,6 @@
                         <div class="tab-pane fade" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab">
                             <p class="mb-0">
                                 <!-- [ Hover-table ] start -->
-                                    <div class="d-flex">
-                                        <div class="card-header">
-                                            <h5>View the pending bookings here.</h5>
-                                        </div>
-                                    </div>
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
@@ -154,7 +393,11 @@
                                                         <td>{{ confirm.time }}</td>
                                                         <td>{{ confirm.staff.username }}</td>
                                                         <td>{{ confirm.status }}</td>
-                                                        <td></td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{category.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{category.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{category.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
 
@@ -171,11 +414,6 @@
                         <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
                             <p class="mb-0">
                                 <!-- [ Hover-table ] start -->
-                                    <div class="d-flex">
-                                        <div class="card-header">
-                                            <h5>View the completed bookings here.</h5>
-                                        </div>
-                                    </div>
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
@@ -202,7 +440,11 @@
                                                         <td>{{ confirm.time }}</td>
                                                         <td>{{ confirm.staff.username }}</td>
                                                         <td>{{ confirm.status }}</td>
-                                                        <td></td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{category.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{category.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{category.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
 
@@ -219,11 +461,6 @@
                         <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                             <p class="mb-0">
                                 <!-- [ Hover-table ] start -->
-                                    <div class="d-flex">
-                                        <div class="card-header">
-                                            <h5>View the cancelled bookings here.</h5>
-                                        </div>
-                                    </div>
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">
                                             <table class="table table-hover">
@@ -250,7 +487,11 @@
                                                         <td>{{ confirm.time }}</td>
                                                         <td>{{ confirm.staff.username }}</td>
                                                         <td>{{ confirm.status }}</td>
-                                                        <td></td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{category.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{category.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{category.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
                                                     </tr>
                                                     {% endfor %}
 
@@ -271,5 +512,29 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
 
 {% endblock %}

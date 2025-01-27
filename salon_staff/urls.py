@@ -3,8 +3,19 @@ from . import views
 
 urlpatterns = [
     path('', views.admin_index, name='admin_index'),
+    path('admin_logout/', views.admin_logout, name='admin_logout'),
+    path('admin_login/', views.admin_login, name='admin_login'),
+    
     path('admin_all_bookings/', views.admin_all_bookings, name='admin_all_bookings'),
+    path('admin_del_booking/<int:id>/', views.admin_del_booking, name='admin_del_booking'),
+    path('admin_edit_booking/<int:id>/', views.admin_edit_booking, name='admin_edit_booking'),
+    path('admin_add_booking/', views.admin_add_booking, name='admin_add_booking'),
+
+    # CRUD for staff profiles.
     path('admin_staff_profiles/', views.admin_staff_profiles, name='admin_staff_profiles'),
+    path('admin_del_staff/<int:id>/', views.admin_del_staff, name='admin_del_staff'),
+    path('admin_edit_staff/<int:id>/', views.admin_edit_staff, name='admin_edit_staff'),
+    path('admin_add_staff/', views.admin_add_staff, name='admin_add_staff'),
 
     # CRUD for service categories.
     path('admin_service_categories/', views.admin_service_categories, name='admin_service_categories'),
