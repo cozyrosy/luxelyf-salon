@@ -28,24 +28,54 @@
                     <div id="addModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Category</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group row">
-                                            <label for="staticEmail" class="col-sm-3 col-form-label">Email</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+                                <form class="needs-validation" novalidate method="post" action="{% url 'admin_add_service' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Add Service</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="modal-body">
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <label for="validationCustom01">Service name <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="validationCustom01" placeholder="Service name" name="name" value="" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn  btn-primary">Save changes</button>
-                                </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <label for="validationCustom02">Description <span class="text-danger">*</span></label>
+                                                    <textarea type="text" class="form-control" id="validationCustom02" placeholder="Description" name="description" value="" required></textarea>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3 custom-file">
+                                                    <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
+                                                    <label class="custom-file-label" for="validatedCustomFile">Choose file... <span class="text-danger">*</span></label>
+                                                    <div class="invalid-feedback">Please upload the service image</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row m-4">
+                                                <div class="col-md-6 mb-3 custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="add_to_home" value="true">
+                                                    <label class="custom-control-label" for="customCheck1">Add to home</label>
+                                                </div>
+                                                <div class="col-md-6 mb-3 custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input" id="customswitch1" name="is_active" value="true">
+                                                    <label class="custom-control-label" for="customswitch1">Active</label>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn  btn-primary">Save changes</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -92,8 +122,8 @@
                                                         </td>
                                                         <td>
                                                             <a data-toggle="modal" data-target="#viewModalCenter{{service.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
-                                                            <a data-toggle="modal" data-target="#editModalCenter"><i class="fa solic fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
-                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{service.id}}"><i class="fa solic fa-trash" style="color: #c24242;"></i></a>
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{service.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{service.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
                                                         </td>
 
                                                         <!-- [ vertically-view-modal ] start -->
@@ -145,27 +175,63 @@
 
 
                                                 <!-- [ vertically-edit-modal ] start -->
-                                                        <div id="editModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                        <div id="editModalCenter{{service.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                                 <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Category</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form>
-                                                                            <div class="form-group row">
-                                                                                <label for="staticEmail" class="col-sm-3 col-form-label">Email</label>
-                                                                                <div class="col-sm-9">
-                                                                                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+                                                                    <form class="needs-validation" novalidate method="post" action="{% url 'admin_edit_service' service.id %}" enctype="multipart/form-data">
+                                                                        {% csrf_token %}
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Service</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12 mb-3">
+                                                                                    <label for="validationCustom01">Service name</label>
+                                                                                    <input type="text" class="form-control" id="validationCustom01" name="name" placeholder="Service name" value="{{ service.name }}" required>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </form>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="button" class="btn  btn-primary">Save changes</button>
-                                                                    </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12 mb-3">
+                                                                                    <label for="validationCustom02">Description</label>
+                                                                                    <textarea class="form-control" id="validationCustom02" name="description" placeholder="Description" required>{{ service.description }}</textarea>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12 mb-3">
+                                                                                    <label>Current Image</label>
+                                                                                    <img src="{{ service.image.url }}" alt="Category Image" style="width: 100px; height: 100px;">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12 mb-3 custom-file">
+                                                                                    <input type="file" class="custom-file-input" id="validatedCustomFile" name="image">
+                                                                                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                                                                    <div class="invalid-feedback">Please upload the category image</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row m-4">
+                                                                                <div class="col-md-6 mb-3 custom-control custom-checkbox">
+                                                                                    <input type="checkbox" class="custom-control-input" id="customCheck2" name="add_to_home" {% if service.add_to_home %}checked{% endif %} value="true">
+                                                                                    <label class="custom-control-label" for="customCheck2">Add to home</label>
+                                                                                </div>
+                                                                                <div class="col-md-6 mb-3 custom-control custom-switch">
+                                                                                    <input type="checkbox" class="custom-control-input" id="customswitch2" name="is_active" {% if service.is_active %}checked{% endif %} value="true">
+                                                                                    <label class="custom-control-label" for="customswitch2">Active</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -244,5 +310,28 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
 
 {% endblock %}
