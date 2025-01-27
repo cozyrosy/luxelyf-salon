@@ -3,6 +3,13 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+ROLE_CHOICES = (
+    ('customer', 'Customer'),
+    ('staff', 'Staff'),
+    ('admin', 'Admin'),
+    ('manager', 'Manager'),  # For someone overseeing operations, like staff or bookings
+)
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     country_code = models.IntegerField(blank=True, null=True)
@@ -12,9 +19,11 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=10, choices=(('other', 'Other'), ('male', 'Male'), ('female', 'Female')), default='other', blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    user_role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
+
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username} - {self.user_role}"
 
 
 class TimestampedModel(models.Model):
@@ -43,6 +52,7 @@ class Service(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='static/services/')
     is_active = models.BooleanField(default=True)
+    add_to_home = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -76,3 +86,13 @@ class CustomerInquiry(TimestampedModel):
 
     def __str__(self):
         return f"{self.name} - {self.subject}"
+
+
+class Reviews(TimestampedModel):
+    review = models.TextField()
+    author = models.CharField(max_length=255)
+    rating = models.IntegerField()
+    add_to_home = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Review by {self.author}"

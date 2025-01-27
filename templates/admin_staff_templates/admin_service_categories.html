@@ -9,10 +9,46 @@
             <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Sevice Categories</h5>
+                    <h5>Service Categories</h5>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary">Add new</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter">Add new</button>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show m-2" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- [ vertically-add-modal ] start -->
+                    <div id="addModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Category</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group row">
+                                            <label for="staticEmail" class="col-sm-3 col-form-label">Email</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn  btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ vertically-add-modal ] end -->
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="myTabContent">
@@ -25,36 +61,176 @@
                                                     <tr>
                                                         <th>No.</th>
                                                         <th>Name</th>
-                                                        <th>Username</th>
-                                                        <th>Phone</th>
+                                                        <th>Description</th>
                                                         <th>Image</th>
                                                         <th>Status</th>
+                                                        <th>On Home</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for staff in staffs %}
+                                                    {% for category in page_obj.object_list %}
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
-                                                        <td>{{ staff.user.get_full_name }}</td>
-                                                        <td>{{ staff.user.username }}</td>
-                                                        <td>+ {{staff.country_code}} {{ staff.phone }}</td>
-                                                        <td><img src="{{ staff.image.url }}" alt="Staff Image" style="width: 50px; height: 50px;"></td>
+                                                        <td>{{ category.name }}</td>
+                                                        <td>{{ category.description|truncatechars:20 }}</td>
+                                                        <td><img src="{{ category.image.url }}" alt="Category Image" style="width: 50px; height: 50px;"></td>
                                                         <td>
-                                                            {% if staff.is_active %}
+                                                            {% if category.is_active %}
                                                                 <button type="button" class="btn btn-success" style="background-color: #598a50;">Active</button>
                                                             {% else %}
                                                                 <button type="button" class="btn btn-danger" style="background-color: #c24242;">Inactive</button>
                                                             {% endif %}
                                                         </td>
                                                         <td>
-                                                            <button type="button" class="btn btn-primary" style="background-color: #3899d1;"><i class="fa-regular fa-eye"></i>&nbsp;&nbsp;View</button>
-                                                            <button type="button" class="btn btn-primary"><i class="fa regular fa-pen-to-square"></i>&nbsp;&nbsp;Edit</button>
+                                                            {% if category.add_to_home %}
+                                                                <button type="button" class="btn  btn-icon btn-success" style="height: 20px; width: 20px;"><i class="feather icon-check-circle"></i></button>
+                                                            {% else %}
+                                                                <button type="button" class="btn  btn-icon btn-danger" style="height: 20px; width: 20px;"><i class="feather icon-slash"></i></button>
+                                                            {% endif %}
                                                         </td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{category.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter"><i class="fa solic fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{category.id}}"><i class="fa solic fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
+                                                        
+                                            <!-- [ vertically-view-modal ] start -->
+                                                            <div id="viewModalCenter{{category.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalCenterTitle">View Category</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form method="get">
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-9 text-center">
+                                                                                        <img id="categoryImage" src="{{ category.image.url }}" alt="Category Image" class="rounded-circle" style="width: 100px; height: 100px; border: 2px solid #598a50;">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label for="categoryName" class="col-sm-3 col-form-label">Category Name</label>
+                                                                                    <div class="col-sm-9">
+                                                                                        <input type="text" readonly class="form-control-plaintext" id="categoryName" value="{{ category.name }}">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label for="description" class="col-sm-3 col-form-label">Description</label>
+                                                                                    <div class="col-sm-9">
+                                                                                        <textarea readonly class="form-control-plaintext" id="description">{{ category.description }}</textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row p-4">
+                                                                                    <div class="col-md-6 custom-control custom-checkbox">
+                                                                                        <input type="checkbox" class="custom-control-input" id="customCheck1{{ category.id }}" {% if category.add_to_home %}checked{% endif %} disabled>
+                                                                                        <label class="custom-control-label" for="customCheck1{{ category.id }}">Add to home</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 custom-control custom-switch">
+                                                                                        <input type="checkbox" class="custom-control-input" id="customswitch1{{ category.id }}" {% if category.is_active %}checked{% endif %} disabled>
+                                                                                        <label class="custom-control-label" for="customswitch1{{ category.id }}">Status</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                            <!-- [ vertically-view-modal ] end -->
+
+
+                                                    <!-- [ vertically-edit-modal ] start -->
+                                                            <div id="editModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Category</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form>
+                                                                                <div class="form-group row">
+                                                                                    <label for="staticEmail" class="col-sm-3 col-form-label">Email</label>
+                                                                                    <div class="col-sm-9">
+                                                                                        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="button" class="btn  btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                <!-- [ vertically-edit-modal ] end -->
+
+
+                                                        <!-- [ vertically-delete-modal ] start -->
+                                                                    <div id="deleteModalCenter{{category.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                            <div class="modal-content">
+                                                                                <form method="post" action="{% url 'admin_del_service_category' category.id %}">
+                                                                                    {% csrf_token %}
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete Category</h5>
+                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <p class="mb-0">Are you sure to delete category - <span class="h5 text-danger">{{ category.name }}</span>?</p>
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                                                                        <button type="submit" class="btn  btn-danger">Delete</button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                        <!-- [ vertically-delete-modal ] end -->
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
+                                            <!-- Pagination -->
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-center">
+                                                    {% if page_obj.has_previous %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" style="color: black; border-color: black;" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                        </li>
+                                                    {% endif %}
+
+                                                    {% for num in page_obj.paginator.page_range %}
+                                                        {% if page_obj.number == num %}
+                                                            <li class="page-item active">
+                                                                <a class="page-link" style="background-color: rgb(138, 179, 135); color: white;" href="#">{{ num }}</a>
+                                                            </li>
+                                                        {% else %}
+                                                            <li class="page-item"><a class="page-link" style="background-color: white; color: black; border-color: rgb(138, 179, 135);" href="?page={{ num }}">{{ num }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% if page_obj.has_next %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" style="color: black; border-color: black;" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" tabindex="-1">Next</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 <!-- [ Hover-table ] end -->
