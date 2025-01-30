@@ -1,0 +1,429 @@
+{% extends 'admin_staff_templates/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- [ Main Content ] start -->
+<div class="pcoded-main-container">
+	<div class="pcoded-content">
+        <div class="row">
+            <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Staff Profiles</h5>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCenter">Add new</button>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show m-2" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- [ vertically-add-modal ] start -->
+                    <div id="addModalCenter" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <form class="needs-validation" novalidate method="post" action="{% url 'admin_add_staff' %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Add Staff</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="modal-body p-4">
+                                        <div class="form-row p-4">
+                                            <div class="col-md-12 mb-3 custom-file">
+                                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
+                                                <label class="custom-file-label" for="validatedCustomFile">Choose file... <span class="text-danger">*</span></label>
+                                                <div class="invalid-feedback">Please upload the profile image</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row ">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="firstName">First Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="firstName" placeholder="First Name" name="first_name" required>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="lastName">Last Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="last_name" required>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row p-4">
+                                        <label for="userName">Username <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="userName" placeholder="Username" name="user_name" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="form-row p-4">
+                                        <label for="email">Email <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="form-row p-4">
+                                        <div class="col-md-2 mb-3">
+                                            <label for="countryCode">Code<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="countryCode" placeholder="Country Code" name="country_code" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-10 mb-3">
+                                            <label for="phone">Phone <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="phone" placeholder="Phone" name="phone" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row p-4">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="address">Address <span class="text-danger">*</span></label>
+                                            <textarea type="text" class="form-control" id="address" placeholder="Address" name="address" required></textarea>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row p-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="gender">Gender <span class="text-danger">*</span></label>
+                                            <select class="form-control" id="gender" name="gender" required>
+                                                <option value="">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="age">Age <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="age" placeholder="Age" name="age" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row p-4">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="password">Password <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="confirmPassword">Confirm Password <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" name="confirm_password" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn  btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ vertically-add-modal ] end -->
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                            <p class="mb-0">
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Phone</th>
+                                                        <th>Image</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for staff in staffs %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ staff.user.get_full_name }}</td>
+                                                        <td>{{ staff.user.email }}</td>
+                                                        <td>+ {{staff.country_code}} {{ staff.phone }}</td>
+                                                        <td><img src="{{ staff.image.url }}" alt="Staff Image" style="width: 50px; height: 50px;"></td>
+                                                        <td>
+                                                            {% if staff.is_active %}
+                                                                <button type="button" class="btn btn-success" style="background-color: #598a50;">Active</button>
+                                                            {% else %}
+                                                                <button type="button" class="btn btn-danger" style="background-color: #c24242;">Inactive</button>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <a data-toggle="modal" data-target="#viewModalCenter{{staff.id}}"><i class="fa-solid fa-eye" style="color: #3899d1;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#editModalCenter{{staff.id}}"><i class="fa-solid fa-pen-to-square" style="color: #598a50;"></i></a>&nbsp;&nbsp;
+                                                            <a data-toggle="modal" data-target="#deleteModalCenter{{staff.id}}"><i class="fa-solid fa-trash" style="color: #c24242;"></i></a>
+                                                        </td>
+
+                                                        <!-- [ vertically-view-modal ] start -->
+                                                        <div id="viewModalCenter{{staff.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">View Category</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body p-4">
+                                                                        <div class="form-row">
+                                                                            <div class="col-md-12 mb-3">
+                                                                                <img src="{{ staff.image.url }}" alt="Staff Image" style="width: 100px; height: 100px;">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row p-4">
+                                                                            <div class="col-md-6 mb-3">
+                                                                                <label for="firstName">First Name</label>
+                                                                                <input type="text" class="form-control" id="firstName" value="{{ staff.user.first_name }}" readonly>
+                                                                            </div>
+                                                                            <div class="col-md-6 mb-3">
+                                                                                <label for="lastName">Last Name</label>
+                                                                                <input type="text" class="form-control" id="lastName" value="{{ staff.user.last_name }}" readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row p-4">
+                                                                            <label for="userName">Username</label>
+                                                                            <input type="text" class="form-control" id="userName" value="{{ staff.user.username }}" readonly>
+                                                                        </div>
+                                                                        <div class="form-row p-4">
+                                                                            <label for="email">Email</label>
+                                                                            <input type="email" class="form-control" id="email" value="{{ staff.user.email }}" readonly>
+                                                                        </div>
+                                                                        <div class="form-row p-4">
+                                                                            <div class="col-md-2 mb-3">
+                                                                                <label for="countryCode">Code</label>
+                                                                                <input type="text" class="form-control" id="countryCode" value="{{ staff.country_code }}" readonly>
+                                                                            </div>
+                                                                            <div class="col-md-10 mb-3">
+                                                                                <label for="phone">Phone</label>
+                                                                                <input type="text" class="form-control" id="phone" value="{{ staff.phone }}" readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row p-4">
+                                                                            <div class="col-md-12 mb-3">
+                                                                                <label for="address">Address</label>
+                                                                                <textarea class="form-control" id="address" readonly>{{ staff.address }}</textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-row p-4">
+                                                                            <div class="col-md-6 mb-3">
+                                                                                <label for="gender">Gender</label>
+                                                                                <input type="text" class="form-control" id="gender" value="{{ staff.gender }}" readonly>
+                                                                            </div>
+                                                                            <div class="col-md-6 mb-3">
+                                                                                <label for="age">Age</label>
+                                                                                <input type="number" class="form-control" id="age" value="{{ staff.age }}" readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                        <!-- [ vertically-view-modal ] end -->
+
+
+                                                <!-- [ vertically-edit-modal ] start -->
+                                                        <div id="editModalCenter{{staff.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <form class="needs-validation" novalidate method="post" action="{% url 'admin_edit_staff' staff.id %}" enctype="multipart/form-data">
+                                                                        {% csrf_token %}
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Staff</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        </div>
+                                                                        <div class="modal-body p-4">
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12 mb-3">
+                                                                                    <img src="{{ staff.image.url }}" alt="Category Image" style="width: 100px; height: 100px;">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row p-4">
+                                                                                <div class="col-md-12 mb-3 custom-file">
+                                                                                    <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
+                                                                                    <label class="custom-file-label" for="validatedCustomFile">Choose file... <span class="text-danger">*</span></label>
+                                                                                    <div class="invalid-feedback">Please upload the profile image</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row p-4">
+                                                                                <div class="col-md-6 mb-3">
+                                                                                    <label for="firstName">First Name <span class="text-danger">*</span></label>
+                                                                                    <input type="text" class="form-control" id="firstName" placeholder="First Name" name="first_name" value="{{ staff.user.first_name }}" required>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6 mb-3">
+                                                                                    <label for="lastName">Last Name <span class="text-danger">*</span></label>
+                                                                                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="last_name" value="{{ staff.user.last_name }}" required>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        
+                                                                            <div class="form-row p-4">
+                                                                                <label for="userName">Username <span class="text-danger">*</span></label>
+                                                                                <input type="text" class="form-control" id="userName" placeholder="Username" name="user_name" value="{{ staff.user.username }}" readonly>
+                                                                                <div class="valid-feedback">
+                                                                                    Looks good!
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row p-4">
+                                                                                <label for="email">Email <span class="text-danger">*</span></label>
+                                                                                <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ staff.user.email }}" readonly>
+                                                                                <div class="valid-feedback">
+                                                                                    Looks good!
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row p-4">
+                                                                                <div class="col-md-2 mb-3">
+                                                                                    <label for="countryCode">Code<span class="text-danger">*</span></label>
+                                                                                    <input type="text" class="form-control" id="countryCode" placeholder="Country Code" name="country_code" value="{{ staff.country_code }}" required>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-10 mb-3">
+                                                                                    <label for="phone">Phone <span class="text-danger">*</span></label>
+                                                                                    <input type="text" class="form-control" id="phone" placeholder="Phone" name="phone" value="{{ staff.phone }}" required>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row p-4">
+                                                                                <div class="col-md-12 mb-3">
+                                                                                    <label for="address">Address <span class="text-danger">*</span></label>
+                                                                                    <textarea type="text" class="form-control" id="address" placeholder="Address" name="address" required>{{ staff.address }}</textarea>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row p-4">
+                                                                                <div class="col-md-6 mb-3">
+                                                                                    <label for="gender">Gender <span class="text-danger">*</span></label>
+                                                                                    <select class="form-control" id="gender" name="gender" required>
+                                                                                        <option value="">Select Gender</option>
+                                                                                        <option value="male" {% if staff.gender == 'male' %}selected{% endif %}>Male</option>
+                                                                                        <option value="female" {% if staff.gender == 'female' %}selected{% endif %}>Female</option>
+                                                                                        <option value="other" {% if staff.gender == 'other' %}selected{% endif %}>Other</option>
+                                                                                    </select>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6 mb-3">
+                                                                                    <label for="age">Age <span class="text-danger">*</span></label>
+                                                                                    <input type="number" class="form-control" id="age" placeholder="Age" name="age" value="{{ staff.age }}" required>
+                                                                                    <div class="valid-feedback">
+                                                                                        Looks good!
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                <!-- [ vertically-edit-modal ] end -->
+
+
+                                                    <!-- [ vertically-delete-modal ] start -->
+                                                                <div id="deleteModalCenter{{staff.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <form method="post" action="{% url 'admin_del_staff' staff.id %}">
+                                                                                {% csrf_token %}
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Category</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p class="mb-0">Are you sure to delete staff - <span class="h5 text-danger">{{ staff.user.get_full_name }}</span>?</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn  btn-danger">Delete</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    <!-- [ vertically-delete-modal ] end -->
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                <!-- [ Hover-table ] end -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+
+{% endblock %}

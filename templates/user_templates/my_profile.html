@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!--? Hero Start -->
+<div class="slider-area2">
+    <div class="slider-height2 d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap hero-cap2 pt-70 text-center">
+                        <h2>Profile</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="profile-details pt-70 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="profile-img">
+                    <img src="{% static 'assets/img/post/post_2.png' %}" alt="Profile Image">
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="profile-info">
+                    <h3>{{ user.username }}</h3>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                    <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
