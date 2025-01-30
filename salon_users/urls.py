@@ -9,4 +9,12 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('blogs/', views.blogs, name='blogs'),
     path('blog_detail/<int:id>/', views.blog_detail, name='blog_detail'),
+
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.register, name='register'),
+
+    path('book_service/', views.book_service, name='book_service'),
+    path('booking_history/', views.booking_history, name='booking_history'),
+    path('my_profile/', views.my_profile, name='my_profile'),
 ]
