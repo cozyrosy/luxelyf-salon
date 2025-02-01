@@ -15,7 +15,7 @@ class UserProfile(models.Model):
     country_code = models.IntegerField(blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    image = models.ImageField(upload_to='media/profiles/', blank=True, null=True)
     gender = models.CharField(max_length=10, choices=(('other', 'Other'), ('male', 'Male'), ('female', 'Female')), default='other', blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
@@ -39,7 +39,7 @@ class TimestampedModel(models.Model):
 class ServiceCategory(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='service_categories/', null=True, blank=True)
+    image = models.ImageField(upload_to='media/service_categories/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     add_to_home = models.BooleanField(default=False)
 
@@ -50,7 +50,7 @@ class ServiceCategory(models.Model):
 class Service(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='services/')
+    image = models.ImageField(upload_to='media/services/')
     is_active = models.BooleanField(default=True)
     add_to_home = models.BooleanField(default=False)
 
@@ -59,7 +59,7 @@ class Service(models.Model):
 
 
 class Portfolio(TimestampedModel):
-    image = models.ImageField(upload_to='portfolio/')
+    image = models.ImageField(upload_to='media/portfolio/')
 
     def __str__(self):
         return f"Portfolio Image {self.id}"
@@ -69,7 +69,7 @@ class Blog(TimestampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     author = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='blogs/')
+    image = models.ImageField(upload_to='media/blogs/')
     date = models.DateField()
 
     def __str__(self):
