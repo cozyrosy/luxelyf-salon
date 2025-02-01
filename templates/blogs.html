@@ -23,51 +23,86 @@
     <section class="blog_area section-padding">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 mb-5 mb-lg-0">
-                    <div class="blog_left_sidebar">
-                        {% for blog in blogs %}
-                        <article class="blog_item">
-                            <div class="blog_item_img" href="{% url 'blog_detail' blog.id %}">
-                                <img class="card-img rounded-0" src="{{ blog.image.url }}" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>{{ blog.date.day }}</h3>
-                                    <p>{{ blog.date|date:"F" }}</p>
-                                </a>
+                <div class="col-lg-12 mb-5 mb-lg-0">
+                    <!-- <div class="blog_left_sidebar"> -->
+                        <div class="row mb-10">
+                            {% for blog in page_obj %}
+                            <div class="col-md-6 mb-80">
+                                <article class="blog_item" style="height: 100%; display: flex; flex-direction: column;">
+                                    <div class="blog_item_img">
+                                        <a href="{% url 'blog_detail' blog.id %}">
+                                            <img class="card-img rounded-0" src="{{ blog.image.url }}" alt="" 
+                                                 style="width: 100%; height: 300px; object-fit: cover;">
+                                        </a>
+                                        <a href="#" class="blog_item_date">
+                                            <h3>{{ blog.date.day }}</h3>
+                                            <p>{{ blog.date|date:"F" }}</p>
+                                        </a>
+                                    </div>
+                                    <div class="blog_details" style="flex-grow: 1;">
+                                        <a class="d-inline-block" href="{% url 'blog_detail' blog.id %}">
+                                            <h2 class="blog-head" style="color: #2d2d2d;">{{ blog.title }}</h2>
+                                        </a>
+                                        <p>{{ blog.description|truncatechars:250 }}</p>
+                                        <ul class="blog-info-link">
+                                            <li><a href="#"><i class="fa fa-user"></i> {{ blog.author }}</a></li>
+                                        </ul>
+                                    </div>
+                                </article>
                             </div>
-                            <div class="blog_details" >
-                                <a class="d-inline-block" href="{% url 'blog_detail' blog.id %}">
-                                    <h2 class="blog-head" style="color: #2d2d2d;">{{ blog.title }}</h2>
-                                </a>
-                                <p>{{ blog.description|truncatechars:250 }}</p>
-                                <ul class="blog-info-link">
-                                    <li><a href="#"><i class="fa fa-user"></i> {{ blog.author }}</a></li>
-                                </ul>
-                            </div>
-                        </article>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                         <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
-                                <li class="page-item">
-                                    <a href="#" class="page-link" aria-label="Previous">
-                                        <i class="ti-angle-left"></i>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">1</a>
-                                </li>
-                                <li class="page-item active">
-                                    <a href="#" class="page-link">2</a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link" aria-label="Next">
-                                        <i class="ti-angle-right"></i>
-                                    </a>
-                                </li>
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a href="?page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                                            <i class="ti-angle-left"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">
+                                            <i class="ti-angle-left"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item">
+                                            <a href="#" class="page-link">{{ num }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a href="?page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">
+                                            <i class="ti-angle-right"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">
+                                            <i class="ti-angle-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
                             </ul>
                         </nav>
-                    </div>
+                    <!-- </div> -->
                 </div>
-                <div class="col-lg-4">
+            </div>
+        </div>
+    </section>
+    <!-- Blog Area End -->
+</main>
+                <!-- <div class="col-lg-4">
                     <div class="blog_right_sidebar">
                         <aside class="single_sidebar_widget search_widget">
                             <form action="#">
@@ -121,7 +156,7 @@
                                 </li>
                             </ul>
                         </aside>
-                        <!-- <aside class="single_sidebar_widget popular_post_widget">
+                        <aside class="single_sidebar_widget popular_post_widget">
                             <h3 class="widget_title" style="color: #2d2d2d;">Recent Post</h3>
                             <div class="media post_item">
                                 <img src="assets/img/post/post_1.png" alt="post">
@@ -159,8 +194,8 @@
                                     <p>01 Hours ago</p>
                                 </div>
                             </div>
-                        </aside> -->
-                        <!-- <aside class="single_sidebar_widget tag_cloud_widget">
+                        </aside>
+                        <aside class="single_sidebar_widget tag_cloud_widget">
                             <h4 class="widget_title" style="color: #2d2d2d;">Tag Clouds</h4>
                             <ul class="list">
                                 <li>
@@ -188,7 +223,7 @@
                                     <a href="#">illustration</a>
                                 </li>
                             </ul>
-                        </aside> -->
+                        </aside>
 
                         <aside class="single_sidebar_widget instagram_feeds">
                             <h4 class="widget_title" style="color: #2d2d2d;">Instagram Feeds</h4>
@@ -225,7 +260,7 @@
                                 </li>
                             </ul>
                         </aside>
-                        <!-- <aside class="single_sidebar_widget newsletter_widget">
+                        <aside class="single_sidebar_widget newsletter_widget">
                             <h4 class="widget_title" style="color: #2d2d2d;">Newsletter</h4>
                             <form action="#">
                                 <div class="form-group">
@@ -235,13 +270,8 @@
                                 <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
                                     type="submit">Subscribe</button>
                             </form>
-                        </aside> -->
+                        </aside>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Blog Area End -->
-</main>
+                </div> -->
 
 {% endblock %}
