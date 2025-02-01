@@ -28,8 +28,13 @@ def contact(request):
     return render(request, 'contact.html')
 
 def blogs(request):
-    blogs = Blog.objects.all()
-    return render(request, 'blogs.html', context={'blogs': blogs})
+    blogs = Blog.objects.all().order_by('-date')
+
+    paginator = Paginator(blogs, 4)  # Show 4 bookings per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'blogs.html', context={'page_obj': page_obj})
 
 def blog_detail(request, id):
     blog = get_object_or_404(Blog, id=id)
