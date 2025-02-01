@@ -44,10 +44,25 @@
         </div>
          <!-- Arrow -->
          <div class="thumb-content-box">
-            <div class="thumb-content">
-                <h3>make an appointment now</h3>
-                <a href="contact.html"> <i class="fas fa-long-arrow-alt-right"></i></a>
-            </div>
+            
+                <div class="thumb-content">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'book_service' %}"> 
+                        <h3>make an appointment now</h3>
+                    </a>
+                    <a href="{% url 'book_service' %}">
+                        <i class="fas fa-long-arrow-alt-right text-black"></i>
+                    </a>
+
+                    {% else %}
+                    <a href="{% url 'login' %}"> 
+                        <h3>make an appointment now</h3>
+                    </a>
+                    <a href="{% url 'login' %}">
+                        <i class="fas fa-long-arrow-alt-right text-black"></i>
+                    </a>
+                    {% endif %}
+                </div>
         </div>
     </div>
     <!-- slider Area End-->
@@ -90,7 +105,7 @@
                 <div class="col-xl-7 col-lg-8 col-md-11 col-sm-11">
                     <div class="section-tittle text-center mb-90">
                         <span>Professional Services</span>
-                        <h2>Our Best services that  we offering to you</h2>
+                        <h2>Best services that  we offer</h2>
                     </div>
                 </div>
             </div>
@@ -123,7 +138,7 @@
                 <div class="col-xl-8 col-lg-8 col-md-11 col-sm-11">
                     <div class="section-tittle text-center mb-100">
                         <span>Luxe-Lyf Teams</span>
-                        <h2>Our  experts for you</h2>
+                        <h2>Our  experts</h2>
                     </div>
                 </div>
             </div>
@@ -184,7 +199,7 @@
                 <div class="col-xl-7 col-lg-7">
                     <div class="section-tittle mb-50">
                         <span>Our Best Pricing</span>
-                        <h2>We provide best price<br> in the Muvattupuzha!</h2>
+                        <h2>best price<br> in Muvattupuzha!</h2>
                     </div>
                     <!-- Pricing  -->
                     <div class="row">
@@ -231,8 +246,8 @@
             <div class="row justify-content-center">
                 <div class="col-xl-6 col-lg-7 col-md-9 col-sm-10">
                     <div class="section-tittle text-center mb-100">
-                        <span>our image gallery</span>
-                        <h2>some images from our salon</h2>
+                        <span>our salon</span>
+                        <h2>Image Gallery</h2>
                     </div>
                 </div>
             </div>
