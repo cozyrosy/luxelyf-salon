@@ -10,13 +10,20 @@ ROLE_CHOICES = (
     ('manager', 'Manager'),  # For someone overseeing operations, like staff or bookings
 )
 
+
 class UserProfile(models.Model):
+    GENDER_CHOICES = (
+    ('other', 'Other'), 
+    ('male', 'Male'), 
+    ('female', 'Female'),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     country_code = models.IntegerField(blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='profiles/', blank=True, null=True)
-    gender = models.CharField(max_length=10, choices=(('other', 'Other'), ('male', 'Male'), ('female', 'Female')), default='other', blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='other', blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     user_role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
@@ -48,9 +55,11 @@ class ServiceCategory(models.Model):
 
 
 class Service(models.Model):
+    category = models.ForeignKey(ServiceCategory, related_name='services', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(upload_to='services/')
+    price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     is_active = models.BooleanField(default=True)
     add_to_home = models.BooleanField(default=False)
 
