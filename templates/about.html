@@ -50,9 +50,9 @@
         </section>
         <!-- About-2 Area End -->
         <!--? Services Area Start -->
-        <section class="service-area pb-170">
+        <!-- <section class="service-area pb-170">
             <div class="container">
-                <!-- Section Tittle -->
+                Section Tittle
                 <div class="row d-flex justify-content-center">
                     <div class="col-xl-7 col-lg-8 col-md-11 col-sm-11">
                         <div class="section-tittle text-center mb-90">
@@ -61,12 +61,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- Section caption -->
+                Section caption
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="services-caption text-center mb-30">
                             <div class="service-icon">
-                                <!-- <i class="flaticon-healthcare-and-medical"></i> -->
+                                <i class="flaticon-healthcare-and-medical"></i> 
                                 <img src="{% static 'assets/img/gallery/man.png' %}" alt="" style="max-width: 50%; max-height: 300px;">
 
                             </div> 
@@ -110,7 +110,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <!-- Services Area End -->
         <!--? Team Start -->
         <div class="team-area pb-180">
@@ -120,62 +120,31 @@
                     <div class="col-xl-8 col-lg-8 col-md-11 col-sm-11">
                         <div class="section-tittle text-center mb-100">
                             <span>Luxe-Lyf Teams</span>
-                            <h2>Our  exparts for you</h2>
+                            <h2>Our  experts for you</h2>
                         </div>
                     </div>
                 </div>
                 <div class="row team-active dot-style">
                     <!-- single Tem -->
+                    {% for tm in team %}
                     <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
                         <div class="single-team mb-80 text-center">
-                            <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team1.png' %}" alt="">
+                            <div class="team-img" style="width: 100%; height: 450px; overflow: hidden;">
+                                <img src="{{ tm.image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
-                            <div class="team-caption">
-                                <span>Master </span>
-                                <h3><a href="#">NAME </a></h3>
+                            <div class="team-caption" style="width: 400px;">
+                                <span>{{ tm.role }} </span>
+                                <h3><a href="#">{{ tm.user.get_full_name }} </a></h3>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                        <div class="single-team mb-80 text-center">
-                            <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team2.png' %}" alt="">
-                            </div>
-                            <div class="team-caption">
-                                <span> Expart</span>
-                                <h3><a href="#">NAME</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                        <div class="single-team mb-80 text-center">
-                            <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team3.png' %}" alt="">
-                            </div>
-                            <div class="team-caption">
-                                <span>Master </span>
-                                <h3><a href="#">NAME</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                        <div class="single-team mb-80 text-center">
-                            <div class="team-img">
-                                <img src="{% static 'assets/img/gallery/team2.png' %}" alt="">
-                            </div>
-                            <div class="team-caption">
-                                <span>Master </span>
-                                <h3><a href="#">NAME</a></h3>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
         <!-- Team End -->
         <!-- Best Pricing Area Start -->
-        <div class="best-pricing section-padding2 position-relative">
+        <!-- <div class="best-pricing section-padding2 position-relative">
             <div class="container">
                 <div class="row justify-content-end">
                     <div class="col-xl-7 col-lg-7">
@@ -183,7 +152,7 @@
                             <span>Our Best Pricing</span>
                             <h2>We provide best price<br> in the city!</h2>
                         </div>
-                        <!-- Pricing  -->
+                         Pricing  
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="pricing-list">
@@ -214,17 +183,17 @@
                     </div>
                 </div>
             </div>
-            <!-- pricing img -->
+            pricing img 
             <div class="pricing-img">
                 <img class="pricing-img1" src="{% static 'assets/img/gallery/pricing2.png' %}" alt="">
                 <img class="pricing-img2" src="{% static 'assets/img/gallery/pricing1.png' %}" alt="">
             </div>
-        </div>
+        </div> -->
         <!-- Best Pricing Area End -->
         <!--? Gallery Area Start -->
-        <div class="gallery-area section-padding30">
+        <!-- <div class="gallery-area section-padding30">
             <div class="container">
-                <!-- Section Tittle -->
+                Section Tittle
                 <div class="row justify-content-center">
                     <div class="col-xl-6 col-lg-7 col-md-9 col-sm-10">
                         <div class="section-tittle text-center mb-100">
@@ -260,7 +229,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Gallery Area End -->
 
 

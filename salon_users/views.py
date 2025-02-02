@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Blog, Service, ServiceCategory, UserProfile
+from .models import Blog, Reviews, Service, ServiceCategory, UserProfile
 from salon_staff.models import Booking, Staff
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -10,12 +10,21 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def index(request):
-    services = ServiceCategory.objects.filter(is_active=True, add_to_home=True)
+    service_cat = ServiceCategory.objects.filter(is_active=True, add_to_home=True)
     blogs = Blog.objects.all()
-    return render(request, 'index.html', {'services': services, 'blogs':blogs})
+    team = Staff.objects.filter(is_active=True)
+    reviews = Reviews.objects.filter(add_to_home=True).order_by('-created_at')[:10]
+    services = Service.objects.filter(is_active=True, add_to_home=True)
+
+    return render(request, 'index.html', {
+        'service_cat': service_cat, 'blogs':blogs, 
+        'team':team, 'reviews':reviews, 'services':services
+        })
 
 def about(request):
-    return render(request, 'about.html')
+    team = Staff.objects.filter(is_active=True)
+
+    return render(request, 'about.html', {'team': team})
 
 def service_categories(request):
     services = ServiceCategory.objects.filter(is_active=True)
