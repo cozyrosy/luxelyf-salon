@@ -111,7 +111,7 @@
             </div>
             <!-- Section caption -->
             <div class="row">
-                {% for service in services %}
+                {% for service in service_cat|slice:":3" %}
                 <div class="col-xl-4 col-lg-4 col-md-6">
                     <div class="services-caption text-center mb-30">
                         <div class="service-icon">
@@ -126,6 +126,9 @@
                     </div>
                 </div>
                 {% endfor %}
+            </div>
+            <div class="row justify-content-center mt-4">
+                <a href="{% url 'services' %}" class="btn">Explore More</a>
             </div>
         </div>
     </section>
@@ -144,54 +147,24 @@
             </div>
             <div class="row team-active dot-style">
                 <!-- single Tem -->
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
+                 {% for tm in team %}
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                     <div class="single-team mb-80 text-center">
-                        <div class="team-img">
-                            <img src="{% static 'assets/img/gallery/team1.png' %}" alt="">
+                        <div class="team-img" style="width: 100%; height: 450px; overflow: hidden;">
+                            <img src="{{ tm.image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div class="team-caption">
-                            <span>Master </span>
-                            <h3><a href="#">NAME </a></h3>
+                            <span>{{ tm.role }} </span>
+                            <h3><a href="#">{{ tm.user.get_full_name }} </a></h3>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                    <div class="single-team mb-80 text-center">
-                        <div class="team-img">
-                            <img src="{% static 'assets/img/gallery/team2.png' %}" alt="">
-                        </div>
-                        <div class="team-caption">
-                            <span> Expart</span>
-                            <h3><a href="#">NAME</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                    <div class="single-team mb-80 text-center">
-                        <div class="team-img">
-                            <img src="{% static 'assets/img/gallery/team3.png' %}" alt="">
-                        </div>
-                        <div class="team-caption">
-                            <span>Master </span>
-                            <h3><a href="#">NAME</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                    <div class="single-team mb-80 text-center">
-                        <div class="team-img">
-                            <img src="{% static 'assets/img/gallery/team2.png' %}" alt="">
-                        </div>
-                        <div class="team-caption">
-                            <span>Master </span>
-                            <h3><a href="#">NAME</a></h3>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
     <!-- Team End -->
+
     <!-- Best Pricing Area Start -->
     <div class="best-pricing section-padding2 position-relative">
         <div class="container">
@@ -206,17 +179,13 @@
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="pricing-list">
                                 <ul>
-                                    <li>Styling. . . . . . . . . . . . . . . . . . . . . . . . . . . . <span></span></li>
-                                    <li>Styling + Color. . . . . . . . . . . . . . . . . . . <span>to-update</span></li>
-                                    <li>Styling + Tint. . . . . . . . . . . . . . . . . . . . . .<span>to-update</span></li>
-                                    <li>  Semi-permanent wave. . . . . . . . . . . . .<span>to-update</span></li>
-                                    <li> Cut + Styling. . . . . . . . . . . . . . . . . . . . . .<span>to-update</span></li>
-                                    <li> Cut + Styling + Color. . . . . . . . . . . . . <span>to-update</span></li>
-                                    <li> Cut + Styling + Tint. . . . . . . . . . . . . . . .<span>to-update</span></li>
+                                    {% for service in services %}
+                                        <li style="display: flex; justify-content: space-between;">{{ service.name }}<span>{{ service.price }}</span></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
+                        <!-- <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="pricing-list">
                                 <ul>
                                     <li>Cut. . . . . . . . . . . . . . . . . . . . . . . . . . . . .<span>to-update</span></li>
@@ -227,7 +196,7 @@
                                     <li>Clean up. . . . . . . . . . . . . . . . . . . . . . . . .<span>to-update</span></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -239,6 +208,7 @@
         </div>
     </div>
     <!-- Best Pricing Area End -->
+
     <!--? Gallery Area Start -->
     <div class="gallery-area section-padding30">
         <div class="container">
@@ -280,10 +250,12 @@
         </div>
     </div>
     <!-- Gallery Area End -->
+
     <!-- Cut Details Start -->
     <div class="cut-details section-bg section-padding2" data-background="{% static 'assets/img/gallery/section_bg02.png' %}">
        <div class="container">
         <div class="cut-active dot-style">
+            {% for review in reviews %}
             <div class="single-cut">
                 <div class="cut-icon mb-20">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px">
@@ -291,44 +263,11 @@
                     </svg>
                 </div>
                 <div class="cut-descriptions">
-                    <p>We are here to provide the best for you, ensuring top-quality
-                         service that meets your expectations. As Muvattupuzha’s best 
-                         salon, we strive for excellence in every detail, guaranteeing that your 
-                        experience with us leaves you feeling confident, refreshed, and valued.</p>
-                    <span>Shine </span>
+                    <p>{{ review.review }}</p>
+                    <span>{{ review.author }} </span>
                 </div>
             </div>
-            <div class="single-cut">
-                <div class="cut-icon mb-20">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px">
-                        <image  x="0px" y="0px" width="50px" height="50px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfkBQ4MDDIERuyfAAADc0lEQVRYw7WYXWxTZRjH/+e0ikhh7QgfiYJZZ7bhBC6mU0LQ6DBADNGYLEaNJGpi4jTEQczYjQG8EL2ThAUTvTRGBwmECyBA+XRKHJpUL1yXFseWbe1ixgZCSAg/Lmo9bXe+up0+/5vT//Oc9/ee8z7nqwbyGbVqUL2iiuiurmtMKf2tu/52DXtW1OhVtekFRZTSkCY1rYcV0VI1arl+VULH9JvnGLhpHT/wD728z+M22QVs5ksyJOlkgds4zqlWEgzSQQ3uEzF4ju8ZpZsHK4NEOcgo7xL2AFhq4CgDtPmHPEWGg0R9AwrayjD77CY2s/RtsrRXDMhrCSc5wyIvyE6GaJ4lQogQB/idZW6QjxlkxRwQee0lWdoupec0a9uqlauHM8VrYyXqyLIuEIQIcYLPZ0JC/EJnQIh8C4xYDV0wO0hgBAgRm0kxrxhSS46mQBFCHKa7GLKbbwNHiCayRAqQCBMBdVW5etlRgGzjWFUQYgMDGHnIaZfbSIxTWNFP3MGzl0GaViQWMVXoAhv9SGn0O3hO+oLPkHiZ4y5FacrD3nPSJn5GptbrJ7+P+VnERa3VA6bWKFlFyC0NqdFUXOkqQqS06kwt1XhVIeNaZiqqSZeS0z4955jWwrBCuudSskvSRklSTDEXzznuaJ74l/m+rt4Wm3Zt8WxhcYAOU5Na7OuwJ3165RHTlKlhrfQFaZckXfH0ymOFhsNKaZX6POYSU7v2SZJ6XTz7aFJKbKfH9ZxuLLp9pIk5evaKM4ZMndXzrjOJ/7+V0Uv/rYKdZx9tOi8Jg3HqPY+kn66iGdt59jrMe/nnyX52V+mhVcsNFuchLWQqeH+vRB9xCBVeJC7xZhUQYTKstyBb+JNQ4JB3OJvfKhgJPggYEeEaz5ZCmpgI4H2+WD18Xdi2zG4uBbj8r5GxvtUs2+AE+wNCrCZHq/W7OBUlya4AEI9yjbeKnfL0VbrmiIgzyCelXnnJI/zBV3NYm6cZoaPcnVkW4yQXZtVpBp1keWVmxq7YpIsc2ys8nmbOc5k6u5zTLqtIkOQNn/eBer4hx4eY9nm3XbdwkTSfun67PEQ7R8ixh1rnKsPj/64WbdPrmtI5XdGAruqGrmu+IlquBj2hDXpGl/WdDumm2yBeEEky9KRe1Go16jFFFNVt3dSEUvpLfbqgae8B7gNdcvnkrRzZ4gAAAABJRU5ErkJggg==" />
-                    </svg>
-                </div>
-                <div class="cut-descriptions">
-                    <p>Welcome to Muvattupuzha’s best salon,
-                        your go-to destination for all your beauty and grooming needs.
-                         For women, we offer a wide range of services, including stylish haircuts,
-                          advanced hair treatments, radiant facials, makeup for every occasion, 
-                          and precision threading.
-                          </p>
-                    <span>shine</span>
-                </div>
-            </div>
-            <div class="single-cut">
-                <div class="cut-icon mb-20">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50px" height="50px">
-                        <image  x="0px" y="0px" width="50px" height="50px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfkBQ4MDDIERuyfAAADc0lEQVRYw7WYXWxTZRjH/+e0ikhh7QgfiYJZZ7bhBC6mU0LQ6DBADNGYLEaNJGpi4jTEQczYjQG8EL2ThAUTvTRGBwmECyBA+XRKHJpUL1yXFseWbe1ixgZCSAg/Lmo9bXe+up0+/5vT//Oc9/ee8z7nqwbyGbVqUL2iiuiurmtMKf2tu/52DXtW1OhVtekFRZTSkCY1rYcV0VI1arl+VULH9JvnGLhpHT/wD728z+M22QVs5ksyJOlkgds4zqlWEgzSQQ3uEzF4ju8ZpZsHK4NEOcgo7xL2AFhq4CgDtPmHPEWGg0R9AwrayjD77CY2s/RtsrRXDMhrCSc5wyIvyE6GaJ4lQogQB/idZW6QjxlkxRwQee0lWdoupec0a9uqlauHM8VrYyXqyLIuEIQIcYLPZ0JC/EJnQIh8C4xYDV0wO0hgBAgRm0kxrxhSS46mQBFCHKa7GLKbbwNHiCayRAqQCBMBdVW5etlRgGzjWFUQYgMDGHnIaZfbSIxTWNFP3MGzl0GaViQWMVXoAhv9SGn0O3hO+oLPkHiZ4y5FacrD3nPSJn5GptbrJ7+P+VnERa3VA6bWKFlFyC0NqdFUXOkqQqS06kwt1XhVIeNaZiqqSZeS0z4955jWwrBCuudSskvSRklSTDEXzznuaJ74l/m+rt4Wm3Zt8WxhcYAOU5Na7OuwJ3165RHTlKlhrfQFaZckXfH0ymOFhsNKaZX6POYSU7v2SZJ6XTz7aFJKbKfH9ZxuLLp9pIk5evaKM4ZMndXzrjOJ/7+V0Uv/rYKdZx9tOi8Jg3HqPY+kn66iGdt59jrMe/nnyX52V+mhVcsNFuchLWQqeH+vRB9xCBVeJC7xZhUQYTKstyBb+JNQ4JB3OJvfKhgJPggYEeEaz5ZCmpgI4H2+WD18Xdi2zG4uBbj8r5GxvtUs2+AE+wNCrCZHq/W7OBUlya4AEI9yjbeKnfL0VbrmiIgzyCelXnnJI/zBV3NYm6cZoaPcnVkW4yQXZtVpBp1keWVmxq7YpIsc2ys8nmbOc5k6u5zTLqtIkOQNn/eBer4hx4eY9nm3XbdwkTSfun67PEQ7R8ixh1rnKsPj/64WbdPrmtI5XdGAruqGrmu+IlquBj2hDXpGl/WdDumm2yBeEEky9KRe1Go16jFFFNVt3dSEUvpLfbqgae8B7gNdcvnkrRzZ4gAAAABJRU5ErkJggg==" />
-                    </svg>
-                </div>
-                <div class="cut-descriptions">
-                    <p>
-                        Welcome to Muvattupuzha’s best salon,
-                         where beauty meets expertise. 
-                         For women, we offer an extensive range of services tailored 
-                         to your unique style and needs. From trendy haircuts and vibrant hair colors to luxurious hair treatments like keratin and deep conditioning, we ensure your hair looks and feels its best. </p>
-                    <span>shine</span>
-                </div>
-            </div>
+            {% endfor %}
         </div>
        </div>
     </div>

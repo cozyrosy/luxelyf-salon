@@ -153,7 +153,7 @@ def admin_add_staff(request):
             return redirect('admin_staff_profiles')
 
         user = User.objects.create_user(
-            username=request.POST['username'], 
+            username=request.POST.get('username', ''), 
             email=request.POST['email'], 
             password=request.POST['password']
             )

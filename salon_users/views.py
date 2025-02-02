@@ -1,21 +1,31 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Blog, Service, ServiceCategory, UserProfile
+from .models import Blog, Reviews, Service, ServiceCategory, UserProfile
 from salon_staff.models import Booking, Staff
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
-    services = ServiceCategory.objects.filter(is_active=True, add_to_home=True)
+    service_cat = ServiceCategory.objects.filter(is_active=True, add_to_home=True)
     blogs = Blog.objects.all()
-    return render(request, 'index.html', {'services': services, 'blogs':blogs})
+    team = Staff.objects.filter(is_active=True)
+    reviews = Reviews.objects.filter(add_to_home=True).order_by('-created_at')[:10]
+    services = Service.objects.filter(is_active=True, add_to_home=True)
+
+    return render(request, 'index.html', {
+        'service_cat': service_cat, 'blogs':blogs, 
+        'team':team, 'reviews':reviews, 'services':services
+        })
 
 def about(request):
-    return render(request, 'about.html')
+    team = Staff.objects.filter(is_active=True)
+
+    return render(request, 'about.html', {'team': team})
 
 def service_categories(request):
     services = ServiceCategory.objects.filter(is_active=True)
@@ -43,15 +53,31 @@ def blog_detail(request, id):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        # Validate email and password presence
+        if not email or not password:
+            messages.error(request, 'Email and password are required.')
+            return render(request, 'user_templates/login.html')
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, 'No user found with this email!')
+            return render(request, 'user_templates/login.html')
+
+        user = authenticate(request, username=user.username, password=password)
         if user is not None:
-            login(request, user)
-            return redirect('/') 
+            if user.is_active:
+                login(request, user)
+                return redirect('/')
+            else:
+                messages.error(request, 'This account is inactive.')
+                return render(request, 'user_templates/login.html')
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
+            messages.error(request, 'Invalid credentials')
+            return render(request, 'user_templates/login.html')
     return render(request, 'user_templates/login.html')
 
 def logout_view(request):
@@ -60,10 +86,12 @@ def logout_view(request):
 
 def register(request):
     if request.method == "POST":
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
-        # country_code = request.POST.get('country_code')
+        country_code = request.POST.get('country')
         gender = request.POST.get('gender')
         age = request.POST.get('age')
         password = request.POST.get('password')
@@ -92,15 +120,16 @@ def register(request):
         profile = UserProfile.objects.create(
             user=user,
             phone=phone,
-            # country_code=country_code,
+            country_code=country_code,
             gender=gender,
             age=age
         )
 
         messages.success(request, "Account created successfully! Please log in.")
         return redirect('login')
+    genders = UserProfile.GENDER_CHOICES 
 
-    return render(request, 'user_templates/register.html')
+    return render(request, 'user_templates/register.html', {'genders': genders})
 
 
 
@@ -138,10 +167,8 @@ def book_service(request):
         conflicting_bookings = Booking.objects.filter(
             staff_id=staff_id,
             date=date,
-            status='Confirmed'
-        ).filter(
-            # Check if the new booking overlaps with existing bookings
-            time__range=(time, (end_time - timedelta(minutes=1)).time())
+            status='confirmed',
+            time=time,
         )
 
         if conflicting_bookings.exists():
@@ -166,7 +193,12 @@ def book_service(request):
         messages.success(request, 'Booking created successfully! Please wait for confirmation.')
         return redirect('booking_history')
 
-    return render(request,   'user_templates/book_service.html', {'categories': categories, 'services': services, 'staffs': staffs})
+    return render(request, 'user_templates/book_service.html', {'categories': categories, 'services': services, 'staffs': staffs})
+
+def get_services_by_category(request, category_id):
+    services = Service.objects.filter(category__id=category_id, is_active=True)
+    services_list = list(services.values('id', 'name'))
+    return JsonResponse(services_list, safe=False)
 
 def booking_history(request):
     bookings = Booking.objects.filter(customer__user=request.user)
