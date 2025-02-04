@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     
     <title>Register</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,32 +17,28 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 50px;
+            /* margin: 50px;
             padding: 20px;
-            margin: 50px;
+            margin: 50px; */
         }
 
-        .form-container {
-            width: 650px; /* Proper width */
+        .wraper {
             background: #fff;
-            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            margin-top: 50px; /* Added margin to move it down */
-            margin-bottom: 50px; /* Added bottom margin */
             border-top: 5px solid #C19750;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
             font-size: 24px;
         }
 
         .form-group {
             display: flex;
-            gap: 20px; /* Added space between fields */
-            margin-bottom: 15px;
+            gap: 10px; 
+            /* margin-bottom: 15px; */
         }
 
         .form-group div {
@@ -60,7 +57,7 @@
 
         input, select {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
@@ -74,7 +71,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            /* margin-top: 20px; */
             font-size: 16px;
             font-weight: bold;
         }
@@ -85,13 +82,13 @@
 
         .links {
             text-align: center;
-            margin-top: 15px;
+            /* margin-top: 15px; */
         }
 
         .links a {
             text-decoration: none;
             font-size: 14px;
-            margin: 0 10px;
+            /* margin: 0 10px; */
             color: #5A4F41;
             font-weight: bold;
         }
@@ -100,96 +97,116 @@
             text-decoration: underline;
         }
     </style>
+
 </head>
 <body>
-    <div class="form-container" style="margin-top: 30px;">
-        <h2>Register</h2>
-        {% if messages %}
-            {% for message in messages %}
-                <div style="color: red;" class="alert alert-{{ message.tags }} alert-dismissible fade show m-2" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endif %}
-        <form method="post" action="{% url 'register' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <div style="margin: 10px;">
-                    <label for="first_name">First Name</label>
-                    <input type="text" id="first_name" name="first_name">
-                </div>
-                <div style="margin: 10px;">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" id="last_name" name="last_name">
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="mt-4 mx-auto" style="max-width: 90vw; width: 80vw;">
+            <div class="p-4 shadow wraper">
+                <h2 class="text-center">Register</h2>
+        
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name"  placeholder="Enter your first name">
+                        </div>
+                        <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name"  placeholder="Enter your last name">
+                        </div>
+                        <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username"  placeholder="Choose a username">
+                        </div>
+                    </div>
+        
+                    <div class="row">
+                        
+                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email"  placeholder="Enter your email">
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-items-center">
+                            <div style="width: 100px; max-width: 100px; min-width: 100px;">
+                                <label for="country">Country</label>
+                                <select id="country" name="country" style="height: 100%; padding-top: 6px; padding-bottom: 6px;">
+                                    <option value="+91">+91 (IN)</option>
+                                    <option value="+1">+1 (US)</option>
+                                    <option value="+44">+44 (UK)</option>
+                                </select>
+                            </div>
+                            <div class="input-group flex-grow-1 ml-0">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone"  placeholder="Enter your phone number">
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" style="height: 100%; padding-top: 6px; padding-bottom: 6px;">
+                                <option value="" selected disabled>Select Gender</option>
+                                {% for key, value in genders %}
+                                    <option value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                
+                    </div>
+        
+                    <!-- <div class="row">
+                        
+                    </div> -->
+        
+                    <div class="row">
+                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="age">Age</label>
+                            <input type="number" min="18" id="age" name="age"  placeholder="Enter your age">
+                        </div>
+                        
+                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password"  placeholder="Enter your password">
+                        </div>
+                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                            <label for="confirm_password">Confirm Password</label>
+                            <input type="password" id="confirm_password" name="confirm_password"  placeholder="Confirm your password">
+                        </div>
+                    </div>
+        
+                    <!-- <div class="row">
+                    </div> -->
+        
+                    <div class="text-center mt-3">
+                        <button type="submit" class="button px-5" style="width: fit-content;">Register</button>
+                    </div>
+                </form>
+        
+                <div class="text-center mt-4 links">
+                    <h5>
+                        <a href="{% url 'login' %}">Already have an account? <span>Login <i class="fa-solid fa-right-to-bracket"></i></span></a>
+                    </h5>
+                    <a href="{% url 'index' %}" class="d-block mt-2"><i class="fa-solid fa-house"></i> Go to Home</a>
                 </div>
             </div>
-
-            <div class="form-group">
-                <div style="margin: 10px;">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username">
-                </div>
-                <div style="margin: 10px;">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div style="margin: 10px;" class="country-code">
-                    <label for="country">Code</label>
-                    <select id="country" name="country">
-                        <option value="+91">+91 (IN)</option>
-                        <option value="+1">+1 (US)</option>
-                        <option value="+44">+44 (UK)</option>
-                    </select>
-                </div>
-                <div style="margin: 10px;">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div style="margin: 10px;">
-                    <label for="gender">Gender</label>
-                    <select id="gender" name="gender">
-                        <option value="" selected disabled>Select Gender</option>
-                        {% for key, value in genders %}
-                            <option value="{{ key }}">{{ value }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div style="margin: 10px;">
-                    <label for="age">Age</label>
-                    <input type="number" id="age" name="age">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div style="margin: 10px;">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
-                </div>
-                <div style="margin: 10px;">
-                    <label for="confirm_password">Confirm Password</label>
-                    <input type="password" id="confirm_password" name="confirm_password">
-                </div>
-            </div>
-
-            <button type="submit" class="button">Register</button>
-        </form>
-
-        <div class="links">
-            <h2>
-                <a href="{% url 'login' %}">Already have an account?  <span style="font-size:18px;">Login <i class="fa-solid fa-right-to-bracket"></i>  </span></a>
-            </h2>
-            <a href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Go to Home</a>
         </div>
     </div>
+    
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
