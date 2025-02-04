@@ -88,7 +88,7 @@ def register(request):
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        username = request.POST.get('username')
+        username = request.POST.get('username', '')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         country_code = request.POST.get('country')
@@ -121,8 +121,8 @@ def register(request):
             user=user,
             phone=phone,
             country_code=country_code,
-            gender=gender,
-            age=age
+            gender=gender if gender else None,
+            age=age if age else None
         )
 
         messages.success(request, "Account created successfully! Please log in.")
