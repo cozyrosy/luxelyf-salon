@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,24 +113,22 @@
                 </div>
             {% endfor %}
         {% endif %}
-        <form action="{% url 'login' %}" method="POST">
+        <form action="{% url 'login_with_otp' %}" method="POST">
             {% csrf_token %}
             <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <label for="phone">Phone Number <span class="text-danger">*</span></label>
+                <input type="text" id="phone" name="phone" required>
             </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn" id="send-otp-btn">Send OTP</button>
         </form>
         <p class="bottom-text">Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
-        <p class="bottom-text"><a href="{% url 'login_with_otp' %}">Login with OTP</a></p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
 </body>
 </html>
+
+

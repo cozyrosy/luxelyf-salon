@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from .utils import send_otp
 # Create your views here.
 
 def index(request):
@@ -79,6 +80,35 @@ def login_view(request):
             messages.error(request, 'Invalid credentials')
             return render(request, 'user_templates/login.html')
     return render(request, 'user_templates/login.html')
+
+def request_otp(request):
+    if request.method == "POST":
+        phone = request.POST.get("phone")
+        otp = send_otp(phone)
+        
+        if otp:
+            request.session["otp"] = otp  # Store OTP in session
+            request.session["phone"] = phone
+            return redirect("verify_otp")  # Redirect to OTP verification page
+        else:
+            messages.error(request, "Failed to send OTP. Try again.")
+    return render(request, 'user_templates/request_otp.html')
+
+def verify_otp(request):
+    if request.method == "POST":
+        entered_otp = request.POST.get("otp")
+        session_otp = request.session.get("otp")
+        phone = request.session.get("phone")
+
+        if str(entered_otp) == str(session_otp):
+            user, created = User.objects.get_or_create(username=phone)
+            login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect('/')  # Redirect to homepage
+
+        else:
+            messages.error(request, "Invalid OTP. Try again.")
+    return render(request, 'user_templates/verify_otp.html')
 
 def logout_view(request):
     logout(request)
