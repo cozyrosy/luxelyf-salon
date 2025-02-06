@@ -11,6 +11,8 @@ urlpatterns = [
     path('blog_detail/<int:id>/', views.blog_detail, name='blog_detail'),
 
     path('login/', views.login_view, name='login'),
+     path("login_with_otp/", views.request_otp, name="login_with_otp"),
+    path("verify_otp/", views.verify_otp, name="verify_otp"),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
 
