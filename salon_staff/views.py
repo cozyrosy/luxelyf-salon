@@ -76,7 +76,7 @@ def admin_edit_booking(request, id):
         booking.service = get_object_or_404(Service, id=request.POST['service'])
         booking.staff = get_object_or_404(Staff, id=request.POST['staff'])
         booking.date = request.POST['date']
-        booking.time = request.POST['time']
+        booking.start_time = request.POST['time']
         booking.status = request.POST['status']
         booking.save()
         messages.success(request, 'Booking updated successfully.')
@@ -93,7 +93,7 @@ def admin_add_booking(request):
         booking.service = get_object_or_404(Service, id=request.POST['service'])
         booking.staff = get_object_or_404(Staff, id=request.POST['staff'])
         booking.date = request.POST['date']
-        booking.time = request.POST['time']
+        booking.start_time = request.POST['time']
         booking.status = request.POST['status']
         booking.save()
         messages.success(request, 'Booking added successfully.')

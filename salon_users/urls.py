@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
      path("login_with_otp/", views.request_otp, name="login_with_otp"),
     path("verify_otp/", views.verify_otp, name="verify_otp"),
+    path("complete-profile/", views.complete_profile, name="complete_profile"),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
 

@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from .utils import send_otp
+from datetime import datetime, timedelta
 # Create your views here.
 
 def index(request):
@@ -102,6 +103,15 @@ def verify_otp(request):
 
         if str(entered_otp) == str(session_otp):
             user, created = User.objects.get_or_create(username=phone)
+
+            # If user is new, redirect to profile completion page
+            if created:
+                user_profile = UserProfile.objects.create(user=user)
+                messages.info(request, "Please complete your profile.")
+                login(request, user)
+                return redirect("complete_profile")
+
+            # If user already exists, log them in
             login(request, user)
             messages.success(request, "Login successful!")
             return redirect('/')  # Redirect to homepage
@@ -109,6 +119,33 @@ def verify_otp(request):
         else:
             messages.error(request, "Invalid OTP. Try again.")
     return render(request, 'user_templates/verify_otp.html')
+
+def complete_profile(request):
+    """Page where new users enter their details after OTP verification."""
+    genders = UserProfile.GENDER_CHOICES
+    if request.method == "POST":
+        user_obj = request.user
+
+        user_obj.first_name = request.POST.get("first_name", "")
+        user_obj.last_name = request.POST.get("last_name", "")
+
+        user_profile, created = UserProfile.objects.get_or_create(user=user_obj)
+
+        user_profile.phone = user_obj.username
+        user_profile.gender = request.POST.get("gender", "")
+        user_profile.age = request.POST.get("age", None)
+
+        email = request.POST.get("email", "").strip()
+        if email:  # Store email only if provided
+            user_obj.email = email
+
+        user_obj.save()
+        user_profile.save()
+
+        messages.success(request, "Profile completed successfully!")
+        return redirect("/")  # Redirect to homepage
+
+    return render(request, 'user_templates/complete_profile.html', {'genders': genders})
 
 def logout_view(request):
     logout(request)
@@ -188,36 +225,40 @@ def book_service(request):
             staff = Staff.objects.filter(id=staff_id).first()
             if not staff:
                 messages.error(request, 'Invalid staff selected.')
-
+        
+        user = get_object_or_404(UserProfile, user=request.user)
+        if not user:
+            messages.error(request, 'User not found!')
+        
         # Convert date and time to datetime objects
-        start_time = datetime.strptime(f"{date} {time}", '%Y-%m-%d %H:%M')
-        end_time = start_time + timedelta(hours=1)
+        start_time = datetime.strptime(f"{date} {time}", '%Y-%m-%d %H:%M').time()
+        end_time = (datetime.combine(datetime.min, start_time) + timedelta(minutes=service.duration)).time()
 
-        # Check if the staff is available during the selected time
+
+        # Check for overlapping bookings
         conflicting_bookings = Booking.objects.filter(
-            staff_id=staff_id,
+            staff=staff,
             date=date,
-            status='confirmed',
-            time=time,
+            start_time__lt=end_time,  # New booking starts before an existing one ends
+            end_time__gt=start_time,  # New booking ends after an existing one starts
+            status="confirmed"
         )
 
         if conflicting_bookings.exists():
-            messages.error(request, 'The selected staff is not available at the chosen time.')
+            messages.error(request, "The selected staff is not available at this time.")
             return redirect('book_service')
 
         # Save the booking
-        service = get_object_or_404(Service, id=service_id)
-        user = get_object_or_404(User, id=request.user.id)
-        customer = UserProfile.objects.filter(user=user).first()
+        # customer = UserProfile.objects.filter(user=user).first()
 
         # Save the booking
         booking = Booking.objects.create(
-            customer=customer,
+            customer=user,
             staff=staff if staff_id else None,
             service=service,
             date=date,
-            time=time,
-            status='Pending'
+            start_time=time,
+            status='Confirmed'
         )
 
         messages.success(request, 'Booking created successfully! Please wait for confirmation.')
