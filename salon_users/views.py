@@ -266,10 +266,13 @@ def book_service(request):
 
     return render(request, 'user_templates/book_service.html', {'categories': categories, 'services': services, 'staffs': staffs})
 
-def get_services_by_category(request, category_id):
-    services = Service.objects.filter(category__id=category_id, is_active=True)
-    services_list = list(services.values('id', 'name'))
-    return JsonResponse(services_list, safe=False)
+def get_services_by_category(request):
+    category_id = request.GET.get('category_id')
+    if category_id:
+        services = Service.objects.filter(category__id=category_id, is_active=True).values('id', 'name')
+        return JsonResponse({"services": list(services)}, safe=False)
+    return JsonResponse({"services": []}, safe=False)
+
 
 def booking_history(request):
     bookings = Booking.objects.filter(customer__user=request.user)
@@ -279,6 +282,18 @@ def booking_history(request):
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'user_templates/booking_history.html', {'page_obj': page_obj, 'bookings': bookings})
+
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id, customer__user=request.user)
+
+    if booking.status == 'canceled':
+        messages.error(request, 'This booking is already canceled.')
+    else:
+        booking.status = 'canceled'
+        booking.save()
+        messages.success(request, 'Booking canceled successfully.')
+
+    return redirect('booking_history')
 
 def my_profile(request):    
     return render(request, 'user_templates/my_profile.html')

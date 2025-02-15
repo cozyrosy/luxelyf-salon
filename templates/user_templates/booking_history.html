@@ -33,6 +33,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Time</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,12 +45,108 @@
                         <td>{{ booking.date }}</td>
                         <td>{{ booking.start_time }}</td>
                         <td>{{ booking.status }}</td>
-                    </tr>
+                        <td>
+                            
+                            <i type="button" class="fa-solid fa-eye p-2 text-primary" data-toggle="modal" data-target="#viewModal{{booking.id}}"></i>
+                            {% if booking.status == 'pending' %}
+                                <i type="button" class="fa-solid fa-trash text-danger" data-toggle="modal" data-target="#exampleModal{{booking.id}}"></i>
+                            {% else %}
+                                <span class="text-muted" data-toggle="tooltip" data-placement="top" title="Cannot cancel the confirmed booking">
+                                    <i class="fa-solid fa-trash"></i>
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>   
+                            <!-- View Booking Modal Starts -->
+                            <div class="modal fade" id="viewModal{{booking.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h3 class="modal-title" id="exampleModalLabel">Booking Details</h3>
+                                      <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form>
+                                        <div class="form-group row">
+                                            <label for="category" class="col-sm-4 col-sm-3 col-form-label">Category:</label>
+                                            <div class="col-sm-8 pt-2">
+                                                <input type="text" style="font-size: medium;" class="form-control" readonly id="category" value="{{ booking.service.category.name }}">
+                                            </div>  
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="service" class="col-sm-4 col-form-label">Service:</label>
+                                            <div class="col-sm-8 pt-2">
+                                                <input type="text" style="font-size: medium;" class="form-control" readonly id="service" value="{{ booking.service.name }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="staff" class="col-sm-4 col-form-label">Assigned Staff:</label>
+                                            <div class="col-sm-8 pt-2">
+                                                <input type="text" style="font-size: medium;" class="form-control" readonly id="staff" value="{{ booking.staff.user.get_full_name }}">
+                                            </div>
+                                          </div>
+                                        <div class="form-group row">
+                                            <label for="date" class="col-sm-4 col-form-label">Date:</label>
+                                            <div class="col-sm-8 pt-2">
+                                                <input type="text" style="font-size: medium;" class="form-control" readonly id="date" value="{{ booking.date }}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="time" class="col-sm-4 col-form-label">Time:</label>
+                                            <div class="row col-sm-8">
+                                                <div class="col-sm-6 pt-2">
+                                                    <p style="font-weight: bold;">From</p>
+                                                    <input type="text" style="font-size: medium;" class="form-control" readonly id="start_time" value="{{ booking.start_time }}">
+                                                </div>
+                                                <div class="col-sm-6 pt-2">
+                                                    <p style="font-weight: bold;">To</p>
+                                                    <input type="text" style="font-size: medium;" class="form-control" readonly id="end_time" value="{{ booking.end_time }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            <!-- View Booking Modal Ends -->
+
+
+                            <!-- Cancellation Modal Starts -->
+                            <div class="modal fade" id="exampleModal{{booking.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <form method="post" action="{% url 'cancel_booking' booking.id %}">
+                                        {% csrf_token %}
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Cancel Booking</h5>
+                                            <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h4>Are you sure to cancel the booking for <span class="text-danger">{{ booking.service.name }}</span>?</h4>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <!-- <button type="button" class="btn" data-dismiss="modal">Close</button> -->
+                                            <button type="submit" class="btn">Yes, Cancel</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Cancellation Modal Ends -->
                     {% endfor %}
                     <!-- Add more rows as needed -->
                 </tbody>
             </table>
-            <!-- Pagination -->
+
+            <!-- Pagination Starts -->
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
@@ -83,7 +180,10 @@
                     {% endif %}
                 </ul>
             </nav>
+            <!-- Pagination Ends -->
         </div>
     </div>
 </div>
+
+
 {% endblock %}
