@@ -19,6 +19,7 @@ urlpatterns = [
 
     path('book_service/', views.book_service, name='book_service'),
     path('get_services_by_category/', views.get_services_by_category, name='get_services_by_category'),
+    path('get_staff_by_services/', views.get_staff_by_services, name='get_staff_by_services'),
     path('booking_history/', views.booking_history, name='booking_history'),
     path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
     path('my_profile/', views.my_profile, name='my_profile'),

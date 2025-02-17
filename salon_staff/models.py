@@ -7,6 +7,7 @@ from salon_users.models import TimestampedModel, Service, UserProfile
 
 class Staff(UserProfile):
     role = models.CharField(max_length=255)
+    services = models.ManyToManyField(Service, related_name="staff_members") 
 
     def __str__(self):
         return self.user.get_full_name()
