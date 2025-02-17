@@ -205,9 +205,6 @@
                             <label for="staff" class="d-block">Staff Member</label>
                             <select class="form-control" name="staff" id="staff">
                                 <option value="" disabled selected>Select a staff member</option>
-                                {% for staff in staffs %}
-                                    <option value="{{ staff.id }}">{{ staff.user.get_full_name }}</option>
-                                {% endfor %}
                             </select>
                         </div>
                     </div>
