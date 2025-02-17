@@ -273,6 +273,17 @@ def get_services_by_category(request):
         return JsonResponse({"services": list(services)}, safe=False)
     return JsonResponse({"services": []}, safe=False)
 
+def get_staff_by_services(request):
+    service_id = request.GET.get('service_id')
+    if service_id:
+        service = get_object_or_404(Service, id=service_id)
+
+        staffs = service.staff_members.all()
+        staff_data = [{"id": staff.id, "name": staff.user.get_full_name()} for staff in staffs]
+
+        return JsonResponse({"staffs": staff_data}, safe=False)
+        
+    return JsonResponse({"staffs": []}, safe=False)
 
 def booking_history(request):
     bookings = Booking.objects.filter(customer__user=request.user)
