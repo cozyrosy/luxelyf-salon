@@ -232,12 +232,16 @@ def admin_add_service_category(request):
 @login_required(login_url='admin_login')
 def admin_services(request):
     services = Service.objects.all()
+    categories = ServiceCategory.objects.filter(is_active=True)
 
     paginator = Paginator(services, 5)  # Show 10 bookings per page
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'admin_staff_templates/admin_services.html', {'page_obj': page_obj})
+    return render(request, 'admin_staff_templates/admin_services.html', {
+        'page_obj': page_obj,
+        'categories':categories
+        })
 
 @login_required(login_url='admin_login')
 def admin_del_service(request, id):
@@ -250,8 +254,12 @@ def admin_del_service(request, id):
 def admin_edit_service(request, id):
     if request.method == 'POST':
         service = get_object_or_404(Service, id=id)
+        category_id = request.POST['category']
+        category = get_object_or_404(ServiceCategory, id=category_id)
+
         service.name = request.POST['name']
         service.description = request.POST['description']
+        service.category = category
         service.add_to_home = 'add_to_home' in request.POST
         service.is_active = 'is_active' in request.POST
         if 'image' in request.FILES:
@@ -271,6 +279,7 @@ def admin_add_service(request):
         service = Service()
         service.name = request.POST['name']
         service.description = request.POST['description']
+        service.category = request.POST['category']
         service.add_to_home = 'add_to_home' in request.POST
         service.is_active = 'is_active' in request.POST
         service.image = request.FILES['image']
