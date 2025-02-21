@@ -5,6 +5,7 @@ from salon_staff.models import Booking, Staff
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
 from django.core.paginator import Paginator
 from django.http import JsonResponse
@@ -55,18 +56,18 @@ def blog_detail(request, id):
 
 def login_view(request):
     if request.method == "POST":
-        email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('password')
 
         # Validate email and password presence
-        if not email or not password:
-            messages.error(request, 'Email and password are required.')
+        if not username or not password:
+            messages.error(request, 'Phone and password are required.')
             return render(request, 'user_templates/login.html')
 
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=username)
         except User.DoesNotExist:
-            messages.error(request, 'No user found with this email!')
+            messages.error(request, 'No user found with this number!')
             return render(request, 'user_templates/login.html')
 
         user = authenticate(request, username=user.username, password=password)
@@ -153,14 +154,13 @@ def logout_view(request):
 
 def register(request):
     if request.method == "POST":
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        username = request.POST.get('username', '')
+        name = request.POST.get('name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         country_code = request.POST.get('country')
         gender = request.POST.get('gender')
         age = request.POST.get('age')
+        dob = request.POST.get('dob', '')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
 
@@ -169,17 +169,27 @@ def register(request):
             messages.error(request, "Passwords do not match.")
             return redirect('register')
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, "Username already taken.")
+        if User.objects.filter(username=phone).exists():
+            messages.error(request, "You already have an active account.")
             return redirect('register')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already registered.")
             return redirect('register')
+        
+        if name:
+            name_parts = name.split()
+            first_name = name_parts[0]  # First word as first_name
+            last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""  # Rest as last_name
+        else:
+            first_name = ""
+            last_name = ""
 
         # Create User
         user = User.objects.create(
-            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            username=phone,
             email=email,
             password=make_password(password)  # Hash the password for security
         )
@@ -189,7 +199,8 @@ def register(request):
             phone=phone,
             country_code=country_code,
             gender=gender if gender else None,
-            age=age if age else None
+            age=age if age else None,
+            dob=dob if dob else None
         )
 
         messages.success(request, "Account created successfully! Please log in.")
@@ -199,7 +210,7 @@ def register(request):
     return render(request, 'user_templates/register.html', {'genders': genders})
 
 
-
+@login_required(login_url='login')
 def book_service(request):
     categories = ServiceCategory.objects.filter(is_active=True)
     services = Service.objects.filter(is_active=True)
@@ -285,6 +296,7 @@ def get_staff_by_services(request):
         
     return JsonResponse({"staffs": []}, safe=False)
 
+@login_required(login_url='login')
 def booking_history(request):
     bookings = Booking.objects.filter(customer__user=request.user)
     paginator = Paginator(bookings, 5)  # Show 10 bookings per page
@@ -294,6 +306,7 @@ def booking_history(request):
 
     return render(request, 'user_templates/booking_history.html', {'page_obj': page_obj, 'bookings': bookings})
 
+@login_required(login_url='login')
 def cancel_booking(request, booking_id):
     booking = get_object_or_404(Booking, id=booking_id, customer__user=request.user)
 
@@ -306,6 +319,15 @@ def cancel_booking(request, booking_id):
 
     return redirect('booking_history')
 
+@login_required(login_url='login')
 def my_profile(request):    
-    return render(request, 'user_templates/my_profile.html')
+    user = request.user
+    user_profile = UserProfile.objects.filter(user=user).first()
+    return render(request, 'user_templates/my_profile.html', {'user_profile':user_profile})
+
+@login_required(login_url='login')
+def edit_profile(request):
+    if request.POST:
+        return None
+    return render(request, 'user_templates/edit_profile.html')
     

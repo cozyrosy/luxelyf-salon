@@ -21,23 +21,46 @@
 <div class="profile-details pt-70 pb-70">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <div class="profile-img">
-                    <img src="{% static 'assets/img/post/post_2.png' %}" alt="Profile Image">
+            <div class="col-lg-4 mt-4" style="width: 20%;">
+                <div class="card p-3 mb-5" style="border-radius: 80px;">
+                    {% if user_profile.image %}
+                        <img class="card-img" src="{{ user_profile.image.url }}" alt="Profile Picture"
+                            style="border-radius: 50%; width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <img class="card-img" src="{% static 'assets/img/gallery/default-profile.jpg' %}" alt="Default Profile Picture"
+                            style="border-radius: 50%; width: 100%; height: 100%; object-fit: cover;">
+                    {% endif %}
+                </div>
+                <div style="text-align: center;">
+                    <p class="justify-content-center"> Add Photo  <i class="fa-solid fa-camera"></i></p>
                 </div>
             </div>
-            <div class="col-lg-8">
-                <div class="profile-info">
-                    <h3>{{ user.username }}</h3>
-                    <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>First Name:</strong> {{ user.first_name }}</p>
-                    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-                    <p><strong>Date Joined:</strong> {{ user.date_joined }}</p>
+            <div class="col-lg-8" style="width: 80%;">
+                <div class="card p-3 mb-5">
+                    <blockquote class="blockquote mb-0 card-body">
+                    <div style="text-align: right;">
+                        <p data-toggle="modal" data-target="#exampleModal"><strong>Edit Profile</strong> 
+                            <i class="fa-solid fa-user-pen" style="width: 20px;" ></i>
+                        </p>
+                    </div>
+                    <div class="profile-info">
+                        <p><strong>Name:</strong> {{ user_profile.user.get_full_name }}</p>
+                        <p><strong>Email:</strong> {{ user_profile.user.email }}</p>
+                        <p><strong>Phone:</strong> +{{ user_profile.country_code }} {{ user.username }}</p>
+                        <p><strong>Date Joined:</strong> {{ user.date_joined.date }}</p>
+                        <p><strong>Address:</strong> {{ user_profile.address}} </p>
+                        <p><strong>Gender:</strong> {{ user_profile.gender}} </p>
+                        <p><strong>Age:</strong> {{ user_profile.age}} </p>
+                        <p><strong>Date of Birth:</strong> {{ user_profile.dob}} </p>
+                    </div>
+                    </blockquote>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 {% endblock %}
