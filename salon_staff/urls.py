@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin_edit_booking/<int:id>/', views.admin_edit_booking, name='admin_edit_booking'),
     path('admin_add_booking/', views.admin_add_booking, name='admin_add_booking'),
 
+
     # CRUD for staff profiles.
     path('admin_staff_profiles/', views.admin_staff_profiles, name='admin_staff_profiles'),
     path('admin_del_staff/<int:id>/', views.admin_del_staff, name='admin_del_staff'),
