@@ -101,7 +101,7 @@
 </head>
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="mt-4 mx-auto" style="max-width: 90vw; width: 80vw;">
+        <div class="mt-4 mx-auto" style="max-width: 50vw; width: 50vw;">
             <div class="p-4 shadow wraper">
                 <h2 class="text-center">Register</h2>
         
@@ -115,33 +115,28 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-        
+                <span id="errorMessage" style="color: red; font-size: 14px; display: none;"></span>
                 <form method="post" action="{% url 'register' %}">
                     {% csrf_token %}
                     
                     <div class="row">
-                        <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                        <!-- <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
                             <label for="first_name">First Name <span style="color: red;">*</span></label>
                             <input type="text" id="first_name" name="first_name"  placeholder="Enter your first name" required>
+                        </div> -->
+                        <div class=" input-group col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
+                            <label for="name">Name <span style="color: red;">*</span></label>
+                            <input type="text" id="name" name="name"  placeholder="Enter your name" required>
                         </div>
-                        <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
-                            <label for="last_name">Last Name <span style="color: red;">*</span></label>
-                            <input type="text" id="last_name" name="last_name"  placeholder="Enter your last name" required>
-                        </div>
-                        <div class=" input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username"  placeholder="Choose a username">
+                        <div class="input-group col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
+                            <label for="email">Email</label>
+                            <input id="email" name="email"  placeholder="Enter your email">
                         </div>
                     </div>
         
                     <div class="row">
                         
-                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
-                            <label for="email">Email <span style="color: red;">*</span></label>
-                            <input type="email" id="email" name="email"  placeholder="Enter your email" required>
-                        </div>
-
-                        <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-items-center">
+                        <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex align-items-center">
                             <div style="width: 100px; max-width: 100px; min-width: 100px;">
                                 <label for="country">Country</label>
                                 <select id="country" name="country" style="width: 90px; height: 100%; padding-top: 6px; padding-bottom: 6px;" required>
@@ -151,13 +146,13 @@
                                 </select>
                             </div>
                             <div class="input-group flex-grow-1 ml-0">
-                                <label for="phone">Phone Number <span style="color: red;">*</span></label>
-                                <input type="tel" id="phone" name="phone"  placeholder="Enter your phone number" required>
+                                <label for="phone">Phone Number <span style="color: red;">*</span>  </label>
+                                <input type="tel" id="phone" name="phone"  placeholder="Enter your phone number">
+                                <span id="phoneError" style="color: red; font-size: 14px; display: none;"></span>
                             </div>
                         </div>
 
-                        
-                        <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                        <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender" style="height: 100%; padding-top: 6px; padding-bottom: 6px;">
                                 <option value="" selected disabled>Select Gender</option>
@@ -169,28 +164,26 @@
                 
                     </div>
         
-                    <!-- <div class="row">
-                        
-                    </div> -->
-        
                     <div class="row">
-                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
-                            <label for="age">Age</label>
-                            <input type="number" min="18" id="age" name="age"  placeholder="Enter your age">
+                        <div class="input-group col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" name="dob"  placeholder="Enter your date of birth">
                         </div>
-                        
-                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                        <div class="input-group col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
+                            <label for="age">Age</label>
+                            <input type="number" min="18" id="age" name="age"  placeholder="Enter your age" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
                             <label for="password">Password <span style="color: red;">*</span></label>
                             <input type="password" id="password" name="password"  placeholder="Enter your password" required>
                         </div>
-                        <div class="input-group col-12 col-md-6 col-lg-4 mb-3 d-flex flex-column">
+                        <div class="input-group col-12 col-md-6 col-lg-6 mb-3 d-flex flex-column">
                             <label for="confirm_password">Confirm Password <span style="color: red;">*</span></label>
                             <input type="password" id="confirm_password" name="confirm_password"  placeholder="Confirm your password" required>
                         </div>
                     </div>
-        
-                    <!-- <div class="row">
-                    </div> -->
         
                     <div class="text-center mt-3">
                         <button type="submit" class="button px-5" style="width: fit-content;">Register</button>
@@ -212,5 +205,95 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById("phone").addEventListener("blur", function () {
+            let phoneInput = this.value;
+            let errorMsg = document.getElementById("phoneError");
+
+            if (phoneInput.length !== 10) {
+                errorMsg.textContent = "Please enter a valid 10-digit phone number.";
+                errorMsg.style.display = "block";
+            } else {
+                errorMsg.style.display = "none";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const dobInput = document.getElementById("dob");
+        const ageInput = document.getElementById("age");
+        const form = document.querySelector("form");
+        const emailInput = document.getElementById("email");
+        const phoneInput = document.getElementById("phone");
+        const passwordInput = document.getElementById("password");
+        const confirmPasswordInput = document.getElementById("confirm_password");
+
+
+        dobInput.addEventListener("change", function () {
+            const dobValue = new Date(this.value);
+            const today = new Date();
+
+            if (dobValue > today) {
+                alert("Date of Birth cannot be in the future!");
+                dobInput.value = "";
+                ageInput.value = "";
+                return;
+            }
+
+            let age = today.getFullYear() - dobValue.getFullYear();
+            const monthDiff = today.getMonth() - dobValue.getMonth();
+            const dayDiff = today.getDate() - dobValue.getDate();
+
+            // Adjust age if birthday hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            // Set the calculated age in the input field
+            ageInput.value = age >= 18 ? age : "";
+            
+            if (age < 18) {
+                alert("You must be at least 18 years old.");
+                dobInput.value = "";
+            }
+        });
+        
+        form.addEventListener("submit", function (event) {
+            let isValid = true;
+            let errorMessage = "";
+
+            // Validate Email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailInput.value)) {
+                errorMessage += "Please enter a valid email address.\n";
+                isValid = false;
+            }
+
+            // Validate Phone Number
+            const phonePattern = /^[0-9]{10,}$/;
+            if (!phonePattern.test(phoneInput.value)) {
+                errorMessage += "Phone number must be at least 10 digits long.\n";
+                isValid = false;
+            }
+
+            // Validate Password
+            if (passwordInput.value.length < 6) {
+                errorMessage += "Password must be at least 6 characters long.\n";
+                isValid = false;
+            }
+
+            // Confirm Password Match
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                errorMessage += "Passwords do not match.\n";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert(errorMessage);
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+    </script>
 </body>
 </html>
