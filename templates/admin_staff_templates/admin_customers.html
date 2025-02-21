@@ -102,7 +102,13 @@
                                                     {% for customer in page_obj.object_list %}
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
-                                                        <td><img src="{{ customer.image.url }}" alt="Customer Image" style="width: 50px; height: 50px;"></td>
+                                                        <td>
+                                                            {% if customer.image %}
+                                                                <img src="{{ customer.image.url }}" alt="Customer Image" style="width: 50px; height: 50px;">
+                                                            {% else %}
+                                                                <span>Customer Image</span>
+                                                            {% endif %}
+                                                        </td>
                                                         <td>{{ customer.user.get_full_name }}</td>
                                                         <td>{{ customer.user.email }}</td>
                                                         <td>+{{ customer.country_code }} {{ customer.phone }}</td>
