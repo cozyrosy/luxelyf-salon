@@ -35,41 +35,55 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div class="modal-body">
-                                            <div class="form-row">
-                                                <div class="col-md-12 mb-3">
-                                                    <label for="validationCustom01">Service name <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="validationCustom01" placeholder="Service name" name="name" value="" required>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="validationCustom01">Service Category <span class="text-danger">*</span></label>
+                                                <select class="form-control" id="validationCustom01" name="category" required>
+                                                    <option value="" disabled selected>Select category</option>
+                                                    {% for category in categories %}
+                                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div class="valid-feedback">
+                                                    Looks good!
                                                 </div>
                                             </div>
-                                            <div class="form-row">
-                                                <div class="col-md-12 mb-3">
-                                                    <label for="validationCustom02">Description <span class="text-danger">*</span></label>
-                                                    <textarea type="text" class="form-control" id="validationCustom02" placeholder="Description" name="description" value="" required></textarea>
-                                                    <div class="valid-feedback">
-                                                        Looks good!
-                                                    </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="validationCustom01">Service name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="validationCustom01" placeholder="Service name" name="name" value="" required>
+                                                <div class="valid-feedback">
+                                                    Looks good!
                                                 </div>
                                             </div>
-                                            <div class="form-row">
-                                                <div class="col-md-12 mb-3 custom-file">
-                                                    <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
-                                                    <label class="custom-file-label" for="validatedCustomFile">Choose file... <span class="text-danger">*</span></label>
-                                                    <div class="invalid-feedback">Please upload the service image</div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="validationCustom02">Description <span class="text-danger">*</span></label>
+                                                <textarea type="text" class="form-control" id="validationCustom02" placeholder="Description" name="description" value="" required></textarea>
+                                                <div class="valid-feedback">
+                                                    Looks good!
                                                 </div>
                                             </div>
-                                            <div class="form-row m-4">
-                                                <div class="col-md-6 mb-3 custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="add_to_home" value="true">
-                                                    <label class="custom-control-label" for="customCheck1">Add to home</label>
-                                                </div>
-                                                <div class="col-md-6 mb-3 custom-control custom-switch">
-                                                    <input type="checkbox" class="custom-control-input" id="customswitch1" name="is_active" value="true">
-                                                    <label class="custom-control-label" for="customswitch1">Active</label>
-                                                </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3 custom-file">
+                                                <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
+                                                <label class="custom-file-label" for="validatedCustomFile">Choose file... <span class="text-danger">*</span></label>
+                                                <div class="invalid-feedback">Please upload the service image</div>
                                             </div>
+                                        </div>
+                                        <div class="form-row m-4">
+                                            <div class="col-md-6 mb-3 custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1" name="add_to_home" value="true">
+                                                <label class="custom-control-label" for="customCheck1">Add to home</label>
+                                            </div>
+                                            <div class="col-md-6 mb-3 custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="customswitch1" name="is_active" value="true">
+                                                <label class="custom-control-label" for="customswitch1">Active</label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn  btn-secondary" data-dismiss="modal">Close</button>
@@ -93,6 +107,7 @@
                                                         <th>No.</th>
                                                         <th>Name</th>
                                                         <th>Description</th>
+                                                        <th>Category</th>
                                                         <th>Image</th>
                                                         <th>Status</th>
                                                         <th>On Home</th>
@@ -105,6 +120,7 @@
                                                         <td>{{ forloop.counter }}</td>
                                                         <td>{{ service.name }}</td>
                                                         <td>{{ service.description|truncatechars:20 }}</td>
+                                                        <td>{{ service.category }}</td>
                                                         <td><img src="{{ service.image.url }}" alt="Service Image" style="width: 50px; height: 50px;"></td>
                                                         <td>
                                                             {% if service.is_active %}
@@ -139,6 +155,12 @@
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-9 text-center">
                                                                                     <img id="categoryImage" src="{{ service.image.url }}" alt="Category Image" class="rounded-circle" style="width: 100px; height: 100px; border: 2px solid #598a50;">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group row">
+                                                                                <label for="categoryName" class="col-sm-3 col-form-label">Service Category</label>
+                                                                                <div class="col-sm-9">
+                                                                                    <input type="text" readonly class="form-control-plaintext" id="categoryName" value="{{ service.category.name }}">
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group row">
@@ -185,6 +207,16 @@
                                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                         </div>
                                                                         <div class="modal-body">
+                                                                            <div class="form-row">
+                                                                                <div class="col-md-12 mb-3">
+                                                                                    <label for="validationCustom01">Service Category</label>
+                                                                                    <select class="form-control" id="categoryName" name="category" required>
+                                                                                        {% for category in categories %}
+                                                                                            <option value="{{ category.id }}" {% if category.id == service.category.id %}selected{% endif %}>{{ category.name }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
                                                                             <div class="form-row">
                                                                                 <div class="col-md-12 mb-3">
                                                                                     <label for="validationCustom01">Service name</label>
