@@ -40,10 +40,10 @@ def portfolio(request):
 def contact(request):
     return render(request, 'contact.html')
 
-def blogs(request):
+def blogs(request): 
     blogs = Blog.objects.all().order_by('-date')
 
-    paginator = Paginator(blogs, 4)  # Show 4 bookings per page
+    paginator = Paginator(blogs, 4)  # Show 4 bookings per pages
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
