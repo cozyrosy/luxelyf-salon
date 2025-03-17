@@ -1,27 +1,24 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 {% load static %}
 
 {% block content %}
-
-<!--? Hero Start -->
-<div class="slider-area2">
-    <div class="slider-height2 d-flex align-items-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="hero-cap hero-cap2 pt-70 text-center">
-                        <h2>Bookings</h2>
-                    </div>
-                </div>
+        <div class="container-fluid bg-breadcrumb">
+            <div class="container text-center py-5" style="max-width: 900px;">
+                <h3 class="text-white display-3 mb-4 wow fadeInDown" data-wow-delay="0.1s">Our Services</h1>
+                <ol class="breadcrumb justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
+                    <li class="breadcrumb-item"><a href="{% url 'new_index' %}">Home</a></li>
+                    <li class="breadcrumb-item active text-primary">booking history</li>
+                </ol>    
             </div>
         </div>
-    </div>
-</div>
-<!-- Hero End -->
+        <!-- Header End -->
+<!--? Hero Start -->
+
 
 <div class="contact-section">
     <div class="d-flex justify-content-end ml-50 mr-50">
-        <a href="{% url 'book_service' %}" class="btn">New Booking</a>
+        <!-- <a href="{% url 'book_service' %}" class="btn">New Booking</a> -->
+         
     </div>
     <div class="row justify-content-center" style="margin: 20px;">
         <div class="col-12 text-center">
@@ -187,6 +184,19 @@
         </div>
     </div>
 </div>
+<div class="center-div">
+    <a href="{% url 'book_service' %}" class="btn custom-green-btn rounded-pill text-white py-2 px-4 flex-wrap flex-sm-shrink-0">
+        Book Appointment
+    </a>
+</div>
 
+<style>
+    .center-div {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically (if needed) */
+    padding-bottom: 10px;
+}
 
+</style>
 {% endblock %}

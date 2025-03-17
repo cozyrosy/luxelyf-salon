@@ -1,0 +1,639 @@
+{% extends 'new_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .custom-button {
+        display: inline-block;
+        background-color: #91f9aa;
+        /* Light luxury green */
+        color: white;
+        padding: 12px 20px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .custom-button:hover {
+        background-color: rgb(116, 220, 109);
+        color: #ffffff;
+        border: 2px solid #83f29d;
+    }
+
+    .service-item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        /* Makes all service items equal height */
+    }
+
+    .service-content {
+        flex-grow: 1;
+        /* Ensures equal height by stretching content */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .service-item {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .service-item:hover {
+        transform: scale(1.05);
+        /* Slight zoom effect */
+    }
+
+    .service-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(40, 167, 69, 0.5);
+        /* Green shade with transparency */
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .service-item:hover::before {
+        opacity: 1;
+    }
+
+    .service-content {
+        position: relative;
+        z-index: 2;
+        /* Ensures text stays above overlay */
+    }
+    .blog-img {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blog-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.appointment {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.container {
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+</style>
+<!-- Carousel Start -->
+<div class="header-carousel owl-carousel">
+    <div class="header-carousel-item">
+        <img src="{% static 'assets/img/gallery/about.png' %}" class="img-fluid w-100" alt="Image">
+        <div class="carousel-caption">
+            <div class="carousel-caption-content p-3">
+                <h5 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">The Style Sanctuary</h5>
+                <h1 class="display-1 text-capitalize text-white mb-4">
+                    "Where Every Look is <span
+                        style="color: #D70040; font-weight: bold; text-shadow: 2px 2px 4px rgba(215, 0, 64, 0.5);">Red
+                        Carpet</span> Ready"
+                </h1>
+
+                <!-- <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,  -->
+                </p>
+                <a class="custom-button" href="{% url 'book_service' %}">Book Appointments</a>
+
+                <!-- <a class="btn  rounded-pill text-white py-3 px-5" href="#">Book Appointment</a> -->
+            </div>
+        </div>
+    </div>
+    <div class="header-carousel-item">
+        <img src="{% static 'assets/img/gallery/about.png' %}" class="img-fluid w-100" alt="Image">
+        <div class="carousel-caption">
+            <div class="carousel-caption-content p-3">
+                <h5 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">"<span
+                        style="color: #D70040; font-weight: bold; text-shadow: 2px 2px 4px rgba(215, 0, 64, 0.5);">G</span>low,
+                    <span
+                        style="color: #D70040; font-weight: bold; text-shadow: 2px 2px 4px rgba(215, 0, 64, 0.5);">G</span>lam,
+                    <span
+                        style="color: #D70040; font-weight: bold; text-shadow: 2px 2px 4px rgba(215, 0, 64, 0.5);">G</span>orgeous<span
+                        style="color: #D70040; font-weight: bold; text-shadow: 2px 2px 4px rgba(215, 0, 64, 0.5);">!</span>"
+                </h5>
+                <h1 class="display-1 text-capitalize text-white mb-4">Look Stunning, Feel Unstoppable!</h1>
+                <!-- <p class="mb-5 fs-5 animated slideInDown">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,  -->
+                </p>
+                <a class="custom-button" href="{% url 'book_service' %}">Book Appointments</a>
+
+
+                <!-- <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="#">Book Appointment</a> -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Carousel End -->
+
+<!-- Navbar & Hero End -->
+
+
+
+<!-- Services Start -->
+
+
+
+<div class="container-fluid service py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 " data-wow-delay="0.2s">
+            <div class="sub-style">
+                <h4 class="sub-title px-3 mb-0">What We Do</h4>
+            </div>
+            <h1 class="display-3 mb-4">Luxe-Lyf: Elevate Your Style with Precision, Luxury, and Unmatched Expertise!"
+            </h1>
+            <p class="mb-0">Luxe-Lyf is a unisex salon located
+                in Muvattupuzha, offering the best haircuts in town.
+                We pride ourselves on delivering top-notch services
+                with a focus on style, precision, and customer
+                satisfaction. Whether it's a trendy haircut,
+                expert styling, or personalized grooming,
+                our skilled professionals ensure you leave
+                looking and feeling your absolute best.
+                Experience luxury, comfort, and care—all under one
+                roof.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for service in service_cat|slice:":6" %}
+            <div class="col-md-6 col-lg-4 col-xl-3" data-wow-delay="0.1s">
+                <div class="service-item rounded">
+                    <div class="service-img rounded-top">
+                        <img src="{{ service.image.url }}" class="img-fluid rounded-top w-70" alt="image">
+                    </div>
+                    <div class="service-content rounded-bottom bg-light p-4">
+                        <div class="service-content-inner">
+                            <h5 class="mb-4">{{ service.name }}</h5>
+                            <p class="mb-4"> {{ service.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
+                <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="#">Services More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Services End -->
+<!-- About Start -->
+<div class="container-fluid about bg-light py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5 wow fadeInLeft" data-wow-delay="0.2s">
+                <div class="about-img pb-5 ps-5">
+                    <img src="{% static 'new/img/about-1.jpg'%}" class="img-fluid rounded w-100"
+                        style="object-fit: cover;" alt="Image">
+                    <div class="about-img-inner">
+                        <img src="{% static 'new/img/about-2.jpg'%}" class="img-fluid rounded-circle w-100 h-100"
+                            alt="Image">
+                    </div>
+                    <div class="about-experience">Your Style, Your hair</div>
+                </div>
+            </div>
+            <div class="col-lg-7 wow fadeInRight" data-wow-delay="0.4s">
+                <div class="section-title text-start mb-5">
+                    <h4 class="sub-title pe-3 mb-0">About Us</h4>
+                    <h1 class="display-3 mb-4">Expert Care for Your Perfect Look.</h1>
+                    <p class="mb-4">
+                        We provide exceptional services with a touch of creativity, tailored to suit your individual
+                        style. Experience precision haircuts, personalized care, and flawless results—because you
+                        deserve nothing but the best. </p>
+                    <div class="mb-4">
+                        <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i>A Refreshing Experience
+                            with a Personal Touch!.</p>
+                        <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i>Luxury & Comfort,
+                            Redefined!.</p>
+                        <p class="text-secondary"><i class="fa fa-check text-primary me-2"></i>The Best Salon in
+                            Muvattupuzha!.</p>
+                    </div>
+                    <a href="#" class="custom-button">Discover More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+<!-- Feature Start -->
+<div class="container-fluid feature py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="sub-style">
+                <h4 class="sub-title px-3 mb-0">Why Choose Us</h4>
+            </div>
+            <h1 class="display-3 mb-4">Revive Your Style, Refresh Your Confidence! </h1>
+            <p class="mb-0">At our salon in Muvattupuzha, we believe beauty is more than just a
+                look—it’s an experience. Our expert stylists and beauty professionals are
+                dedicated to providing top-tier services tailored to your unique style.</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-diagnoses fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Experienced Professionals</h5>
+                            <p class="mb-0">Skilled experts delivering top-quality beauty and styling services.</p>
+
+                            ,</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-briefcase-medical fa-4x text-primary "></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Personalized Treatment</h5>
+                            <p class="mb-0">Tailored beauty solutions crafted to suit your individual style.</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-hospital-user fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Therapy Goals</h5>
+<p class="mb-0">We help you achieve beauty and wellness with expert care and precision.</p>
+ 
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-users fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Expert Beauty Professionals</h5>
+                            <p class="mb-0">Our skilled stylists deliver top-notch beauty services with care.</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-spa fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Luxurious & Comfortable Space</h5>
+                            <p class="mb-0">Relax in elegance where beauty meets comfort for a rejuvenating experience.</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-heart fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Experienced Staff</h5>
+                            <p class="mb-0">We ensure the best beauty and wellness experience with expert care and personalized attention.</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fab fa-pied-piper fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Beauty Goals</h5>
+                            <p class="mb-0">We strive to enhance your beauty and confidence with expert care, precision, and luxury treatments.</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s" style="height: 300px;">
+                <div class="row-cols-1 feature-item p-4" style="height: 100%;">
+            
+                    <div class="col-12">
+                        <div class="feature-icon mb-4">
+                            <div class="p-3 d-inline-flex bg-white rounded">
+                                <i class="fas fa-user-md fa-4x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="feature-content d-flex flex-column">
+                            <h5 class="mb-4">Experienced Professionals</h5>
+                            <p class="mb-0">Our experts deliver top-quality beauty and wellness services tailored to you.</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.2s">
+                <a href="#" class="btn btn-primary rounded-pill text-white py-3 px-5">More Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Feature End -->
+
+
+<!-- Book Appointment Start -->
+<div class="container-fluid appointment py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2">
+                <div class="section-title text-start">
+                    <h4 class="sub-title pe-3 mb-0">Solutions for Your Beauty Needs</h4>
+                    <h1 class="display-4 mb-4">Luxury & Top-Class Services at an Affordable Price.</h1>
+                    <p class="mb-4">Experience premium beauty and wellness treatments designed for elegance and comfort—without breaking the bank!</p>
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <div class="d-flex flex-column h-100">
+                                <div class="mb-4">
+                                    <h5 class="mb-3"><i class="fa fa-check text-primary me-2"></i> Body Relaxation</h5>
+                                    <p class="mb-0">Indulge in soothing treatments that relax your body, refresh your mind, and rejuvenate your spirit.</p>
+                                </div>
+                                <div class="mb-4">
+                                    <h5 class="mb-3"><i class="fa fa-check text-primary me-2"></i> Hair Treatment</h5>
+                                    <p class="mb-0">Nourish, repair, and style your hair with expert treatments designed for healthy, radiant locks.</p>
+                                </div>
+                                <!-- <div class="text-start mb-4">
+                                    <a href="#" class="btn btn-primary rounded-pill text-white py-3 px-5">More
+                                        Details</a>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="video h-100">
+                                <img src="{% static 'new/img/video-img.jpg'%}" class="img-fluid rounded w-100 h-100"
+                                    style="object-fit: cover;" alt="">
+                                <button type="button" class="btn btn-play" data-bs-toggle="modal"
+                                    data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
+                                    <span></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.4s">
+                <div class="appointment-form rounded p-5">
+                    <p class="fs-4 text-uppercase sub-title ">Get In Touch</p>
+                    <h1 class="display-5 mb-4">Connect with us</h1>
+                    <form>
+                        <div class="row gy-3 gx-4">
+                            <div class="col-xl-6">
+                                <input type="text" class="form-control py-3 border-primary bg-transparent text-white"
+                                    placeholder="First Name">
+                            </div>
+                            <div class="col-xl-6">
+                                <input type="email" class="form-control py-3 border-primary bg-transparent text-white"
+                                    placeholder="Email">
+                            </div>
+                            <div class="col-xl-6">
+                                <input type="phone" class="form-control py-3 border-primary bg-transparent"
+                                    placeholder="Phone">
+                            </div>
+                            <div class="col-xl-6">
+                                <select class="form-select py-3 border-primary bg-transparent"
+                                    aria-label="Default select example">
+                                    <option selected>Your Gender</option>
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                    <option value="3">Others</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <input type="date" class="form-control py-3 border-primary bg-transparent">
+                            </div>
+                            <div class="col-xl-6">
+                                <select class="form-select py-3 border-primary bg-transparent"
+                                    aria-label="Default select example">
+                                    <option selected>Department</option>
+                                    <option value="1">Physiotherapy</option>
+                                    <option value="2">Physical Helth</option>
+                                    <option value="2">Treatments</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control border-primary bg-transparent text-white" name="text"
+                                    id="area-text" cols="30" rows="5" placeholder="Write Comments"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <!-- <button type="custom-button" >SUBMIT
+                                    NOW</button> -->
+                    <a href="#" class="custom-button">SUBMIT
+                        NOW</a>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Video -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 16:9 aspect ratio -->
+                <div class="ratio ratio-16x9">
+                    <iframe class="embed-responsive-item" src="" id="video" allowfullscreen allowscriptaccess="always"
+                        allow="autoplay"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Book Appointment End -->
+
+
+<!-- Team Start -->
+<div class="container-fluid team py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="sub-style">
+                <h4 class="sub-title px-3 mb-0">Meet our team</h4>
+            </div>
+            <h1 class="display-3 mb-4">Transform Your Look with Skilled Beauty Experts</h1>
+            <p class="mb-0">At our salon, we take pride in having the best professionals in town! Our highly skilled and experienced team is dedicated to delivering top-notch beauty and hair services, ensuring every client leaves looking and feeling their best.
+
+                💇‍♀️ Expert Stylists & Beauty Professionals – Trained in the latest trends and techniques.
+                ✨ Personalized Services – Tailored to your unique style and preferences.
+                🌟 Premium Quality & Care – Using only the best products for stunning results.
+                
+                Experience the difference with our exceptional team – because you deserve the best! 💖</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for tm in team %}
+            <div class="col-md-6 col-lg-6 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="team-item rounded">
+                    <div class="team-img rounded-top h-100">
+                        <img img="{{tm.image.url }}" class="img-fluid rounded-top w-100" alt="image">
+                        
+                        <!-- <div class="team-icon d-flex justify-content-center">
+                            <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href=""><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href=""><i
+                                    class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href=""><i
+                                    class="fab fa-instagram"></i></a>
+                            <a class="btn btn-square btn-primary text-white rounded-circle mx-1" href=""><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div> -->
+                    </div>
+                    <div class="team-content text-center border border-primary border-top-0 rounded-bottom p-4">
+                        <h5>{{ tm.user.get_full_name }} </h5>
+                        <p class="mb-0">{{ tm.role }} </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Team End -->
+
+
+<!-- Testimonial Start -->
+<div class="container-fluid testimonial py-5 wow zoomInDown" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="section-title mb-5">
+            <div class="sub-style">
+                <h4 class="sub-title text-white px-3 mb-0">Testimonial</h4>
+            </div>
+            <h1 class="display-3 mb-4">What Clients are Say</h1>
+        </div>
+        <div class="testimonial-carousel owl-carousel">
+            {% for review in reviews %}
+            <div class="testimonial-item">
+                <div class="testimonial-inner p-5">
+                    <div class="testimonial-inner-img mb-4">
+                        <img src="{% static 'new/img/testimonial-img.jpg'%}" class="img-fluid rounded-circle" alt="">
+                    </div>
+                    <p class="text-white fs-7">{{ review.review }}
+                    </p>
+                    <div class="text-center">
+                        <h5 class="mb-2">{{ review.author }} </h5>
+                        <!-- <p class="mb-2 text-white-50">New York, USA</p> -->
+                        <div class="d-flex justify-content-center">
+                            <i class="fas fa-star text-secondary"></i>
+                            <i class="fas fa-star text-secondary"></i>
+                            <i class="fas fa-star text-secondary"></i>
+                            <i class="fas fa-star text-secondary"></i>
+                            <i class="fas fa-star text-secondary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        
+         
+        </div>
+    </div>
+</div>
+<!-- Testimonial End -->
+
+
+<!-- Blog Start -->
+<div class="container-fluid blog py-5">
+    <div class="container py-5">
+        <div class="section-title mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="sub-style">
+                <h4 class="sub-title px-3 mb-0">Our Blog</h4>
+            </div>
+            <h1 class="display-3 mb-4">Best Salon in Muvattupuzha for Haircuts, Styling, and Beauty Services</h1>
+<p class="mb-0">Welcome to our premium salon in Muvattupuzha, where we specialize in professional haircuts, hairstyling, and a wide range of beauty treatments. Our experienced professionals are dedicated to enhancing your look with precision and care, using the latest trends and high-quality products. Whether you need a stylish haircut, hair coloring, keratin treatments, facials, or bridal makeup, we offer personalized services tailored to your unique preferences.</p>
+
+<p class="mb-0">At our salon, customer satisfaction is our priority. We create a relaxing and luxurious environment where you can unwind while our expert stylists work their magic. With a commitment to excellence and attention to detail, we ensure that every client leaves feeling confident and beautiful. Visit us today and experience the best salon services in Muvattupuzha.</p>
+
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for blog in blogs|slice:":3" %}
+            <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="blog-item rounded">
+                    <div class="blog-img">
+                        <img src="{{ blog.image.url }}" alt="">
+                    </div>
+                    
+                    <div class="blog-centent p-4">
+                        <div class="d-flex justify-content-between mb-4">
+                            <p class="mb-0 text-muted"><i class="fa fa-calendar-alt text-primary"></i> {{ blog.date.day }}</p>
+                            <a href="{% url 'blog_detail' blog.id %}" class="text-muted"><span class="fa fa-comments text-primary"></span> {{ blog.date|date:"F" }}</a>
+                        </div>
+                        <a href="{% url 'blog_detail' blog.id %}" class="h4">{{ blog.author }}</a>
+                        <p class="my-4">{{ blog.title }}</p>
+                        <a href="{% url 'blog_detail' blog.id %}" class="custom-button">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+           
+        </div>
+    </div>
+</div>
+<!-- Blog End -->
+{% endblock %}
