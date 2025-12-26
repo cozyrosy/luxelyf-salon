@@ -20,7 +20,7 @@ def index(request):
     reviews = Reviews.objects.filter(add_to_home=True).order_by('-created_at')[:10]
     services = Service.objects.filter(is_active=True, add_to_home=True)
 
-    return render(request, 'index.html', {
+    return render(request, 'new_index.html', {
         'service_cat': service_cat, 'blogs':blogs, 
         'team':team, 'reviews':reviews, 'services':services
         })
@@ -28,11 +28,11 @@ def index(request):
 def about(request):
     team = Staff.objects.filter(is_active=True)
 
-    return render(request, 'about.html', {'team': team})
+    return render(request, 'new_about.html', {'team': team})
 
 def service_categories(request):
     services = ServiceCategory.objects.filter(is_active=True)
-    return render(request, 'services.html', {'services': services})
+    return render(request, 'new_services.html', {'service_cat': services})
 
 def portfolio(request):
     return render(request, 'portfolio.html')
